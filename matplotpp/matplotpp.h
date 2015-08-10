@@ -31,15 +31,15 @@ Version: 0.3.13
 #	define MATPLOT_API
 #endif
 
- inline int glutCreateWindow(int left, int top, int width, int height, const char* c) {
+inline int glutCreateWindow(int left, int top, int width, int height, const char* c) {
     glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH );
     glutInitWindowPosition( left, top );
     glutInitWindowSize( width, height );   
     return glutCreateWindow(c);
 };
 
- inline int glutCreateWindow(int left, int top, int width, int height) {
-    char c[] = "untitled";
+inline int glutCreateWindow(int left, int top, int width, int height) {
+    char c[] = "Untitled";
     return glutCreateWindow(left, top, width, height, c);
 };
 
@@ -61,44 +61,19 @@ typedef vector<float> fvec;
 typedef vector<vector<float>> fmat;
 typedef vector<vector<vector<float>>> fcube;
 
-typedef vector<float> dvec;
-typedef vector<vector<float>> dmat;
-typedef vector<vector<vector<float>>> dcube;
+typedef vector<double> dvec;
+typedef vector<vector<double>> dmat;
+typedef vector<vector<vector<double>>> dcube;
 
 template <typename T>
- inline vector<T> linspace(T minf, T maxf, int n) {
-    vector<T> a;
-    if(n<1) {
-		n = 1;
-	}
-    a.resize(n);
-    for(int i=0; i<n; ++i) {
-		a[i] = minf+(maxf-minf)*i/(n-1);
-	}
-    return a;
-};
+inline vector<T> linspace(T minf, T maxf, size_t n);
 
 template <typename T>
- inline valarray<T> valinspace(T minf, T maxf, int n) {
-    valarray<T> a; 
-    a.resize(n);
-    for(int i=0; i<n; ++i) {
-		a[i] =  minf + (maxf - minf)*i/(n-1);
-	}
-    return a;
-};
+inline valarray<T> valinspace(T minf, T maxf, int n);
 
-class Figure {///
- public:
-    Figure(int id_) {
-		id = id_;
-		//Status=1;
-		//Position[0] = 100;
-		//Position[1] = 100;
-		//Position[2] = 800;
-		//Position[3] = 800;
-		Visible=1;
-    };
+class Figure {
+public:
+    Figure(int id_);
     void add_child(int i);
 
 public:
@@ -109,7 +84,7 @@ public:
     vector<int> Children;
 };
 
-class  Layer {///
+class Layer {
  public:
     Layer(int id_);
     void add_child(int i);
@@ -122,7 +97,7 @@ public:
 };
 
 template <typename T>
-class Axes {///
+class Axes {
 public:
 	Axes(int id_);
     void reset();
@@ -192,7 +167,7 @@ public:
 };
 
 template <typename T>
-class  Line {///
+class Line {
 public:
 	Line(int id_);
     int id;
@@ -228,16 +203,10 @@ public:
 };
 
 template <typename T>
-class  Surface {///
+class Surface {
 public:
 	Surface(int id_);
-
-	void get() {
-		cout <<"FaceColor: "<< FaceColor <<endl;
-		cout <<"EdgeColor: "<< EdgeColor <<endl;
-		cout <<"LineStyle: "<< LineStyle <<endl;
-		cout <<"LineWidth: "<< LineWidth <<endl;
-    }
+	void get();
 
 public:
     int type;
@@ -260,14 +229,13 @@ public:
     string MarkerFaceColor;
 
     int Parent;
-    int NContour;
+    size_t NContour;
 };
 
 //Note: 
 // [m,n] = size(Z), length(x) = n length(y) = m, (x(j),y(i),Z(i,j))
-
 template <typename T>
-class  Patch {///
+class Patch {
  public:
     Patch(int id_) {	
 		id=id_;
@@ -281,7 +249,7 @@ class  Patch {///
 public:
     int id;
     int type;
-    vector< vector<int> > Faces;
+    vector<vector<int>> Faces;
     vector<vector<T>> Vertices;
     vector<vector<T>> FaceVertexCData;
     vector<vector<T>> XData,YData,ZData;
@@ -299,7 +267,7 @@ public:
 //Note: XData[iv][if]
 
 template <typename T>
-class  Text {///  
+class Text {  
  public:
     Text(int id_);
     int id;
@@ -311,7 +279,7 @@ class  Text {///
 
 /// contour
 template <typename T>
-struct  ContourPoint {
+struct ContourPoint {
     T x, y;
     int xj, yi;
     int xy;
@@ -319,10 +287,10 @@ struct  ContourPoint {
 };
 
 template <typename T>
- vector<vector<T>> contourc(vector<T> x, vector<T> y, vector<vector<T>> Z, vector<T> v);
+vector<vector<T>> contourc(vector<T> x, vector<T> y, vector<vector<T>> Z, vector<T> v);
 
 template <typename T>
-class MatPlot {///
+class MatPlot {
 public:
     MatPlot();
     ~MatPlot();
@@ -532,10 +500,7 @@ public:
     vector<T> ColorSpec2RGB(string c);
     string rgb2colorspec(vector<T> rgb);
 
-    // print ///
     void print();
-
-
 private:  
     // coordinate transform  //
     // figure coordination
@@ -634,7 +599,11 @@ private:
 
 } // end namespace matplotpp
 
-#include "matplotpp_impl.h"
+// export functions and class.
+template MATPLOT_API std::vector<double> MatPlotPP::linspace(double, double, size_t);
+template MATPLOT_API std::vector<float> MatPlotPP::linspace(float, float, size_t);
+template class MATPLOT_API MatPlotPP::MatPlot<double>;
+template class MATPLOT_API MatPlotPP::MatPlot<float>;
 
 #endif
 

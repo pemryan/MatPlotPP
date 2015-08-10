@@ -9,6 +9,39 @@ Version:0.3.13
 
 namespace MatPlotPP {
 
+template <typename T>
+ inline vector<T> linspace(T minf, T maxf, size_t n) {
+    vector<T> a;
+    if(n<1) {
+		n = 1;
+	}
+    a.resize(n);
+    for(int i=0; i<n; ++i) {
+		a[i] = minf+(maxf-minf)*i/(n-1);
+	}
+    return a;
+};
+
+template <typename T>
+ inline valarray<T> valinspace(T minf, T maxf, int n) {
+    valarray<T> a; 
+    a.resize(n);
+    for(int i=0; i<n; ++i) {
+		a[i] =  minf + (maxf - minf)*i/(n-1);
+	}
+    return a;
+};
+
+Figure::Figure(int id_) {
+	id = id_;
+	//Status=1;
+	//Position[0] = 100;
+	//Position[1] = 100;
+	//Position[2] = 800;
+	//Position[3] = 800;
+	Visible=1;
+};
+
 void Figure::add_child(int i) {
 	Children.push_back(i);
 }
@@ -195,6 +228,14 @@ void Line<T>::color(T r,T g,T b) {
 }
 
 /// Surface
+template <typename T>
+void Surface<T>::get() {
+	cout <<"FaceColor: "<< FaceColor <<endl;
+	cout <<"EdgeColor: "<< EdgeColor <<endl;
+	cout <<"LineStyle: "<< LineStyle <<endl;
+	cout <<"LineWidth: "<< LineWidth <<endl;
+}
+
 template <typename T>
 Surface<T>::Surface(int id_) {
 	id=id_;
@@ -1207,7 +1248,7 @@ void MatPlot<T>::display_axes_3d() {
 		T r3 = T(1.4);
 		int signx, signy;
 		cta0 = ca->cta; 
-		cta0 = fmod(ca->cta, 360);
+		cta0 = fmod(ca->cta, T(360));
 		if((  0<= cta0)&&(cta0< 90)) {signx = 1; signy= 1;}
 		if(( 90<= cta0)&&(cta0<190)) {signx =-1; signy= 1;}
 		if((180<= cta0)&&(cta0<270)) {signx =-1; signy=-1;}
@@ -1437,16 +1478,16 @@ int MatPlot<T>::subplot(int m,int n,int p) {
     int h = axes();
     int ix, iy;
     ix = (p-1)%n;
-    iy=(m-1) - (p-1)/n;
-    ca->Position[0] = (ix+0.13)/n;
-    ca->Position[1] = (iy+0.11)/m;
-    ca->Position[2] = 0.775/n;
-    ca->Position[3] = 0.815/m;
+    iy = (m-1) - (p-1)/n;
+    ca->Position[0] = T((ix+0.13)/n);
+    ca->Position[1] = T((iy+0.11)/m);
+    ca->Position[2] = T(0.775/n);
+    ca->Position[3] = T(0.815/m);
 
-    ca->Viewport3d[0] = 1.0*ix/n;
-    ca->Viewport3d[1] = 1.0*iy/m;
-    ca->Viewport3d[2] = 1.0/n;
-    ca->Viewport3d[3] = 1.0/m;
+    ca->Viewport3d[0] = T(1.0*ix/n);
+    ca->Viewport3d[1] = T(1.0*iy/m);
+    ca->Viewport3d[2] = T(1.0/n);
+    ca->Viewport3d[3] = T(1.0/m);
 
     return h;
 }
@@ -1468,9 +1509,9 @@ int MatPlot<T>::colorbar() {
     int hh = axes();
     ca->ColorMap = cmap;
     ca->View = 2;
-    ca->Position[0] = l+w+w*0.01;
+    ca->Position[0] = T(l+w+w*0.01);
     ca->Position[1] = b;
-    ca->Position[2] = w*0.05;
+    ca->Position[2] = T(w*0.05);
     ca->Position[3] = h;
     ca->ZLim[0] = zmin;
     ca->ZLim[1] = zmax;
@@ -1562,7 +1603,7 @@ void MatPlot<T>::mouse_capture(T *xmouse,T *ymouse) {
 /// Fmax Fmin
 template <typename T>
 T Fmax(vector<T> x) {
-    T maxf =-1e19;
+    T maxf = T(-1e19);
     for(int i = 0; i<x.size(); ++i) {
 	if(x[i]>maxf) {maxf = x[i];}
     }
@@ -1571,7 +1612,7 @@ T Fmax(vector<T> x) {
 
 template <typename T>
 T Fmin(vector<T> x) {
-    T minf = 1e19;
+    T minf = T(1e19);
     for(int i = 0; i<x.size(); ++i) {
 		if(x[i]<minf) {minf = x[i];}
     }
@@ -1580,7 +1621,7 @@ T Fmin(vector<T> x) {
 
 template <typename T>
 T Fmax(vector<vector<T>> x) {
-    T maxf =-1e19;
+    T maxf = T(-1e19);
     for(int i = 0; i<x.size(); ++i) {
 		for(int j = 0; j<x[i].size(); ++j) {
 			if(x[i][j] > maxf) {maxf = x[i][j];}
@@ -1591,7 +1632,7 @@ T Fmax(vector<vector<T>> x) {
 
 template <typename T>
 T Fmin(vector<vector<T>> x) {
-    T minf = 1e19;
+    T minf = T(1e19);
     for(int i = 0; i<x.size(); ++i) {
 		for(int j = 0; j<x[i].size(); ++j) {
 			if(x[i][j] < minf) {minf = x[i][j];}
@@ -1707,7 +1748,9 @@ int MatPlot<T>::plot(vector<T> y) {
     int n = y.size();
     vector<T> x;
     x.resize(n);    
-    for(int i = 0; i<n; ++i) {x[i] = 1.0*i/(n-1);}
+    for(int i = 0; i<n; ++i) {
+		x[i] = T(1.0*i/(n-1));
+	}
     return line(x, y);
 }
 
@@ -1873,9 +1916,9 @@ void MatPlot<T>::display_line() {
 	 
 		if(cl->Marker != "none") {// Marker //
 
-			r = cl->MarkerSize/500.0;
-			rx = cl->MarkerSize/window_w;
-			ry= cl->MarkerSize/window_h;
+			r = T(cl->MarkerSize/500.0);
+			rx = T(cl->MarkerSize/window_w);
+			ry = T(cl->MarkerSize/window_h);
 
 
 			glDisable(GL_LINE_STIPPLE); 
@@ -2026,7 +2069,7 @@ int MatPlot<T>::surface() {
 
     if(isInited == 0) {
 		ca->add_child(h);	   
-		vSurface.push_back(Surface(h));
+		vSurface.push_back(Surface<T>(h));
 		//as.Parent =gca();
     }
     if(isInited == 1) {
@@ -2041,27 +2084,27 @@ template <typename T>
 void MatPlot<T>::surface_config() {
 
     // check data size    
-    int nzi,nzj;
+    size_t nzi, nzj;
     nzi = cs->ZData.size();
     if(nzi) {nzj = cs->ZData[0].size(); }
     
-    int nci,ncj;
+    size_t nci, ncj;
     nci = cs->CDataIndex.size();
     if(nci) {ncj = cs->CDataIndex[0].size();}
 
     // generate x and y data
-    int nx = 0,ny= 0;
-    if(nzi) {ny=nzi; nx =nzj;}
-    if(nci) {ny=nci; nx =ncj;}
+    size_t nx = 0, ny = 0;
+    if(nzi) {ny = nzi; nx = nzj;}
+    if(nci) {ny = nci; nx = ncj;}
     
     //printf("%s %s:%d: %d %d %d %d \n", __func__, __FILE__, __LINE__,nzi,nci,nx,ny);
     if(cs->XData.size()== 0) {
 		cs->XData.resize(1); 
-		cs->XData[0] = linspace(1.0,(T)nx,nx);
+		cs->XData[0] = linspace(T(1.0), T(nx), nx);
     }
     if(cs->YData.size()== 0) {
 		cs->YData.resize(1); 
-		cs->YData[0] = linspace(1.0,(T)ny,ny);
+		cs->YData[0] = linspace(T(1.0), T(ny), ny);
     }
     
     // config data range
@@ -2942,22 +2985,22 @@ void MatPlot<T>::display_contour() {
 template <typename T>
 vector<vector<T>> MatPlot<T>::peaks(int n) {
 
-    T x1 = 1, y1 = 0;
-    T x2 = -1, y2 = 1;
-    T x3 = -0.5, y3 =-1;
+    T x1 = T(1), y1 = T(0);
+    T x2 = T(-1), y2 = T(1);
+    T x3 = T(-0.5), y3 = T(-1);
     T sr1, sr2, sr3;
-    T sigma = 0.4;
-    T a1 = 1, a2 = 0.5, a3 = 0.3;
+    T sigma = T(0.4);
+    T a1 = T(1), a2 = T(0.5), a3 = T(0.3);
     T x, y;
     //vector< vector< T > > Z(n,n);
-    vector<vector<T>> Z(n,vector<T>(n));
+    vector<vector<T>> Z(n, vector<T>(n));
     for(int i = 0; i<n; ++i) {
 		for(int j = 0; j<n; ++j) {
-			x =-2.f+4.f*j/(n-1);
-			y=-2.f+4.f*i/(n-1);
-			sr1=(x-x1)*(x-x1)+(y-y1)*(y-y1);
-			sr2=(x-x2)*(x-x2)+(y-y2)*(y-y2);
-			sr3=(x-x3)*(x-x3)+(y-y3)*(y-y3);
+			x = -2.f+4.f*j/(n-1);
+			y = -2.f+4.f*i/(n-1);
+			sr1 = (x-x1)*(x-x1)+(y-y1)*(y-y1);
+			sr2 = (x-x2)*(x-x2)+(y-y2)*(y-y2);
+			sr3 = (x-x3)*(x-x3)+(y-y3)*(y-y3);
 			Z[i][j] = a1/(1+sr1/sigma) +a2/(1+sr2/sigma) +a3/(1+sr3/sigma) ;
 		}
     }
@@ -2972,7 +3015,7 @@ int MatPlot<T>::patch() {
 
     if(isInited == 0) {	    
 		ca->add_child(h);	   
-		vPatch.push_back(Patch(h));
+		vPatch.push_back(Patch<T>(h));
 		//as.Parent =gca();
     }
     if(isInited == 1) {
@@ -2985,11 +3028,11 @@ int MatPlot<T>::patch() {
 
 template <typename T>
 void MatPlot<T>::patch_config() {
-    ca->xmax =max( Fmax(cp->XData), ca->xmax);
+    ca->xmax = max( Fmax(cp->XData), ca->xmax);
     ca->xmin = min( Fmin(cp->XData), ca->xmin);
-    ca->ymax =max( Fmax(cp->YData), ca->ymax);
+    ca->ymax = max( Fmax(cp->YData), ca->ymax);
     ca->ymin = min( Fmin(cp->YData), ca->ymin);
-    ca->zmax =max( Fmax(cp->ZData), ca->zmax );
+    ca->zmax = max( Fmax(cp->ZData), ca->zmax );
     ca->zmin = min( Fmin(cp->ZData), ca->zmin );
 }
 
@@ -3107,9 +3150,9 @@ int MatPlot<T>::bar(vector<T> y) {
     vector<T> x;
     x.resize(y.size());
     for(int i = 0; i<y.size(); ++i) {
-	x[i] = 1.0*(1+i);
+	x[i] = T(1.0*(1+i));
     }
-    return bar(x, y,0.8);
+    return bar(x, y, T(0.8));
 }
 
 template <typename T>
@@ -3124,7 +3167,7 @@ int MatPlot<T>::bar(vector<T> y,T width) {
 
 template <typename T>
 int MatPlot<T>::bar(vector<T> x,vector<T> y) { 
-    return bar(x, y,0.8);
+    return bar(x, y, T(0.8));
 }
 
 template <typename T>
@@ -3140,10 +3183,10 @@ int MatPlot<T>::bar(vector<T> x,vector<T> y,T width) {
 
     vector<T> X(4), Y(4);
     for(int i = 0; i<x.size(); ++i) {
-	X[0] = x[i]-wx/2.0; Y[0] = 0;
-	X[1] = x[i]+wx/2.0; Y[1] = 0;
-	X[2] = x[i]+wx/2.0; Y[2] = y[i];
-	X[3] = x[i]-wx/2.0; Y[3] = y[i];
+	X[0] = x[i]-wx/2.f; Y[0] = T(0);
+	X[1] = x[i]+wx/2.f; Y[1] = T(0);
+	X[2] = x[i]+wx/2.f; Y[2] = y[i];
+	X[3] = x[i]-wx/2.f; Y[3] = y[i];
 	cp->XData.push_back(X);
 	cp->YData.push_back(Y);
     }
@@ -3284,7 +3327,7 @@ int MatPlot<T>::text() {
 	hObj =h;
   
     if(isInited == 0) {
-		vText.push_back(Text(h));
+		vText.push_back(Text<T>(h));
 		ca->add_child(h);
 		//at.Parent =gca();
     }
@@ -3616,12 +3659,6 @@ string MatPlot<T>::rgb2colorspec(vector<T> rgb) {
     string s = c;
     return s;
 }
-
-//template<> class Axes<float>;
-//template<> class MatPlot<float>;
-
-//template<> class Axes<double>;
-//template<> class MatPlot<double>;
 
 } // end Namespace MatPlotPP
 

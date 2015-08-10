@@ -24,7 +24,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -53,7 +53,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\..\out\$(Platform)\$(Configuration)\lib\</OutDir>
+    <OutDir>..\..\out\$(Platform)\$(Configuration)\bin\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -77,7 +77,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\out\$(Platform)\$(Configuration)\lib\;..\..\out\$(Platform)\$(Configuration)\lib\boost_1530;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>..\..\out\$(Platform)\$(Configuration)\lib\$(TargetName).lib</ImportLibrary>
     </Link>
     <PreBuildEvent>
@@ -115,10 +115,10 @@
   <ItemGroup>
     <ClInclude Include="gl2ps.h" />
     <ClInclude Include="matplotpp.h" />
-    <ClInclude Include="matplotpp_impl.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gl2ps.c" />
+    <ClCompile Include="matplotpp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
