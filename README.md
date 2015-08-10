@@ -1,5 +1,5 @@
 # MatPlotPP
-This repository is a fork of the [matplotpp](https://code.google.com/p/matplotpp/) library by **Yuichi Katori**. The repository is not maintained. It is merely a modified version of the project that uses `cmake`.
+This repository is a fork of the [matplotpp](https://code.google.com/p/matplotpp/) library by **Yuichi Katori**. 
 
 ![logo](http://wiki.matplotpp.googlecode.com/git/logo.png)
 
