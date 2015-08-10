@@ -1557,7 +1557,7 @@ void MatPlot<T>::axis(string s) {
 template <typename T>
 void MatPlot<T>::axis(int s) {
     if(s) {ca->Box = 1;}
-    else{ ca->Box = 0;}    
+    else { ca->Box = 0;}    
 }
 
 template <typename T>
@@ -1579,6 +1579,11 @@ void MatPlot<T>::ticklabel(int s) {
 }
 
 template <typename T>
+void MatPlot<T>::ticklabel(string s) {
+  
+}
+
+template <typename T>
 void MatPlot<T>::title(string s) {
     ca->Title = s;
 }
@@ -1591,6 +1596,11 @@ void MatPlot<T>::xlabel(string s) {
 template <typename T>
 void MatPlot<T>::ylabel(string s) {
     ca->YLabel = s;
+}
+
+template <typename T>
+void MatPlot<T>::zlabel(string s) {
+    ca->ZLabel = s;
 }
 
 template <typename T>
@@ -1745,10 +1755,10 @@ void  MatPlot<T>::vertex(T x,T y) {
 /// plot, semilogx, semilogy, loglog
 template <typename T>
 int MatPlot<T>::plot(vector<T> y) {
-    int n = y.size();
+    size_t n = y.size();
     vector<T> x;
     x.resize(n);    
-    for(int i = 0; i<n; ++i) {
+    for(size_t i = 0; i<n; ++i) {
 		x[i] = T(1.0*i/(n-1));
 	}
     return line(x, y);
@@ -2792,6 +2802,11 @@ void MatPlot<T>::display_surface_3d() {
     }//(X, y,Z)
 }
 
+template <typename T>
+void MatPlot<T>::display_pcolor() {
+
+}
+
 /// dispaly contour
 template <typename T>
 vector<vector<T>> contourc(vector<T> x, vector<T> y, vector<vector<T>> Z, vector<T> v) {
@@ -3316,6 +3331,11 @@ void MatPlot<T>::display_patch_3d() {
 			glEnd();
 		}
     }
+}
+
+template <typename T>
+void MatPlot<T>::display_bar() {
+
 }
 
 // Text ///

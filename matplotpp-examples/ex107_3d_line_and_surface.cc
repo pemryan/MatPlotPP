@@ -23,19 +23,19 @@ void DISPLAY(){
     jet();
     
     // To generate 3D surface plot
-    surface(x,y,Z);
+    surface(x, y, Z);
     
     // Another test data
-    n=300;
+    n = 300;
     x.resize(n);
     y.resize(n);
     z.resize(n);    
     double t;
-    for(int i=0;i<n;++i){
-		t=0.1*i;
-		x[i]=sin(t);
-		y[i]=cos(t);
-		z[i]=0.1*t;
+    for(int i=0; i<n; ++i){
+		t = 0.1*i;
+		x[i] = sin(t);
+		y[i] = cos(t);
+		z[i] = 0.1*t;
     }
 
     // To plot 3D line
