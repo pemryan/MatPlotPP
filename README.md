@@ -20,8 +20,9 @@ Following screenshot and code are a minimal example that provide just a sinusoid
 ![logo](http://wiki.matplotpp.googlecode.com/git/ex_minimal.png)
 
 ```C++
-using namespace std;
 #include "matplotpp.h"
+
+using namespace MatPlotPP;
 class MP : public MatPlot<double> { 
 void DISPLAY() {
     vector<double> x(100), y(100);    
