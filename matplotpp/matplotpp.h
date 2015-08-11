@@ -163,7 +163,7 @@ public:
     string XAxisLocation;
     string YAxisLocation;
 
-    //string XDir,YDir,ZDir;
+    //string XDir, YDir, ZDir;
 
     T XLim[2], YLim[2], ZLim[2]; //  plot range
     int XLimMode, YLimMode, ZLimMode; //  0:Auto 1:Manual
@@ -198,9 +198,9 @@ public:
     // Matlab oriented variables //
     vector<T> XData, YData, ZData;
     vector<T> YPData, YMData;
-    //vector<vector<T>> XData,YData,ZData;
-    //vector<vector<T>> EData,UData,LData;
-    //vector<vector<T>> VData,WData;
+    //vector<vector<T>> XData, YData, ZData;
+    //vector<vector<T>> EData, UData, LData;
+    //vector<vector<T>> VData, WData;
 
     string Color;
     string LineStyle; //   {-} | - - | : | -. | none
@@ -231,7 +231,7 @@ public:
     int id;
     string ColorMap;
 
-    //vector<T> XData,YData;
+    //vector<T> XData, YData;
     vector<vector<T>> XData, YData, ZData, CDataIndex;
     vector<T> V, UserData;
     vector<vector<vector<T>>> CData;
@@ -251,7 +251,7 @@ public:
 };
 
 //Note: 
-// [m,n] = size(Z), length(x) = n length(y) = m, (x(j),y(i),Z(i,j))
+// [m, n] = size(Z), length(x) = n length(y) = m, (x(j), y(i), Z(i, j))
 template <typename T>
 class Patch {
  public:
@@ -270,14 +270,14 @@ public:
     vector<vector<int>> Faces;
     vector<vector<T>> Vertices;
     vector<vector<T>> FaceVertexCData;
-    vector<vector<T>> XData,YData,ZData;
+    vector<vector<T>> XData, YData, ZData;
 
     //vector<T> ICVec;
     //vector<vector<T>> ICMat;    
     //vector<vector<vector<T>>> CData;
     vector<vector<T>> CData;
 
-    string EdgeColor,FaceColor; //  {ColorSpec}|none|flat|interp 
+    string EdgeColor, FaceColor; //  {ColorSpec}|none|flat|interp 
 
     string LineStyle; // {-} | - - | : | -. | none
     T LineWidth;
@@ -340,9 +340,9 @@ public:
     void ylabel(const string& s);
     void zlabel(const string& s);
 
-    //void xlim(const T min,T max);
+    //void xlim(const T min, T max);
     //void xlim(const string& s);
-    //void legend(const string& s,int N);
+    //void legend(const string& s, int N);
     //int plotyy
     void mouse_capture(T *xmouse, T *ymouse);   
     // set, General Object Handling ///
@@ -363,8 +363,8 @@ public:
     int line();
     int line(const vector<T>& x, const vector<T>& y);
     int line(const vector<T>& x, const vector<T>& y, const vector<T>& z);
-    //line(X,Y)
-    //line(X,Y,Z)
+    //line(X, Y)
+    //line(X, Y, Z)
 
     int plot(const vector<T>& y);
     int plot(const vector<T>& x, const vector<T>& y);    
@@ -387,12 +387,12 @@ public:
     int errorbar(const vector<T>& x, const vector<T>& y, const vector<T>& e);
     int errorbar(const vector<T>& x, const vector<T>& y, const vector<T>& ep, const vector<T>& em);
 
-    //int quiver(U,V);
-    //int quiver(X,Y,U,V);
+    //int quiver(U, V);
+    //int quiver(X, Y, U, V);
     
-    //int scatter(X,Y,S,C)
-    //int scatter(X,Y,S)
-    //int scatter(X,Y)
+    //int scatter(X, Y, S, C)
+    //int scatter(X, Y, S)
+    //int scatter(X, Y)
 
     // Surface, Contour ///
     vector<vector<T>> peaks(const int n);
@@ -424,7 +424,7 @@ public:
     int contour(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z, const int n);
     int contour(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z, const vector<T>& v);
     //int contour(vector<vector<T>>& X, vector<vector<T>>& Y, vector<vector<T>>& Z);
-    //int contour(vector<vector<T>>& X, vector<vector<T>>& Y, vector<vector<T>>& Z,int n);
+    //int contour(vector<vector<T>>& X, vector<vector<T>>& Y, vector<vector<T>>& Z, int n);
     //int contour(vector<vector<T>>& X, vector<vector<T>>& Y, vector<vector<T>>& Z, vector<T> v);
 
     //int mesh(vector<vector<T>>& Z);
@@ -449,8 +449,8 @@ public:
     int patch(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& C);    
     int patch(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& Z, const vector<T>& C); //  !!    
     int patch(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& Z, const vector<vector<T>>& C); //  !!
-    //int patch(vector<vector<T>>& X, vector<vector<T>>& Y,vector<vector<vector<T>>>& C);
-    //int patch(vector<vector<T>>& X, vector<vector<T>>& Y, vector<vector<T>>& Z,vector<vector<vector<T>>>& C);
+    //int patch(vector<vector<T>>& X, vector<vector<T>>& Y, vector<vector<vector<T>>>& C);
+    //int patch(vector<vector<T>>& X, vector<vector<T>>& Y, vector<vector<T>>& Z, vector<vector<vector<T>>>& C);
 
     int bar(const vector<T>& y);
     int bar(const vector<T>& y, const T width);
@@ -458,18 +458,18 @@ public:
     int bar(const vector<T>& x, const vector<T>& y, const T width);
 
     //int bar(Y)
-    //int bar(Y,T width);
-    //int bar(Y,string style);
-    //int bar(Y,T width,string style);
+    //int bar(Y, T width);
+    //int bar(Y, string style);
+    //int bar(Y, T width, string style);
 
-    //int bar(x,Y)
-    //int bar(x,Y,T width);
-    //int bar(x,Y,string style);
-    //int bar(x,Y,T width,string style);
+    //int bar(x, Y)
+    //int bar(x, Y, T width);
+    //int bar(x, Y, string style);
+    //int bar(x, Y, T width, string style);
       
     //int hist(y);
-    //int hist(y,x);
-    //int hist(y,nbins);
+    //int hist(y, x);
+    //int hist(y, nbins);
 
     //int pie(vector<T> x);
     //int pie(vector<T> x, vector<int> Explode);

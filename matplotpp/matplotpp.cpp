@@ -13,11 +13,11 @@ template <typename T>
 inline vector<T> linspace(const T minf, const T maxf, const size_t n0) {
     vector<T> a;
     size_t n = n0;
-    if(n<1) {
+    if(n < 1) {
         n = 1;
     }
     a.resize(n);
-    for(int i=0; i<n; ++i) {
+    for(int i = 0; i < n; ++i) {
         a[i] = minf + (maxf-minf)*i/(n-1);
     }
     return a;
@@ -27,7 +27,7 @@ template <typename T>
 inline valarray<T> valinspace(const T minf, const T maxf, const size_t n) {
     valarray<T> a; 
     a.resize(n);
-    for(int i=0; i<n; ++i) {
+    for(int i = 0; i < n; ++i) {
         a[i] =  minf + (maxf - minf)*i/(n-1);
     }
     return a;
@@ -35,7 +35,7 @@ inline valarray<T> valinspace(const T minf, const T maxf, const size_t n) {
 
 Figure::Figure(const int id_) {
     id = id_;
-    // Status=1;
+    // Status = 1;
     // Position[0] = 100;
     // Position[1] = 100;
     // Position[2] = 800;
@@ -171,7 +171,7 @@ void Axes<T>::add_child(const int i) {Children.push_back(i);}
     
 template <typename T>
 vector<T> Axes<T>::make_tick(const T minf, const T maxf) {
-    int i,j;
+    int i, j;
     T dg;
     T x, y;
     int z;
@@ -179,16 +179,16 @@ vector<T> Axes<T>::make_tick(const T minf, const T maxf) {
     z = (int)log10(x);
     y = x/pow(T(10), T(z));
     dg = 1*pow(T(10), T(z));
-    if(y<5) {dg = T(0.5)*pow(T(10), T(z));}
-    if(y<2) {dg = T(0.2)*pow(T(10), T(z));}
+    if(y < 5) {dg = T(0.5)*pow(T(10), T(z));}
+    if(y < 2) {dg = T(0.2)*pow(T(10), T(z));}
 
     T min0;
-    min0 = minf- fmod(minf,dg); j = 0;
+    min0 = minf- fmod(minf, dg); j = 0;
 
     vector<T> tick;
     tick.clear();
-    if(maxf>minf) { i = -2; while(maxf>=min0+dg*i) { if(minf<=min0+dg*i) { tick.push_back(min0+dg*i); j++; } i+= 1;} }
-    if(maxf<minf) { i = -2; while(maxf<=min0-dg*i) { if(minf>=min0-dg*i) { tick.push_back(min0-dg*i); j++; } i+= 1;} }
+    if(maxf>minf) { i = -2; while(maxf >= min0+dg*i) { if(minf <= min0 + dg*i) { tick.push_back(min0 + dg*i); j++; } i+= 1;} }
+    if(maxf<minf) { i = -2; while(maxf <= min0-dg*i) { if(minf >= min0 - dg*i) { tick.push_back(min0 - dg*i); j++; } i+= 1;} }
     return tick;
 }
 
@@ -205,8 +205,8 @@ Line<T>::Line(const int id_)
     MarkerEdgeColor = "k";
     MarkerFaceColor = "w";
 
-    Errorbar=0;
-    // PlotStyle=0;
+    Errorbar = 0;
+    // PlotStyle = 0;
 } 
 
 template <typename T>
@@ -344,7 +344,7 @@ void MatPlot<T>::display() {
             if(vText.size()   != iText   ) { mode_next = 0; }
             if(vLayer.size()  != iLayer  ) { mode_next = 0; }
 
-            for(int i = 0; i<vAxes.size(); ++i) { vAxes[i].config(); }
+            for(int i = 0; i < vAxes.size(); ++i) { vAxes[i].config(); }
         }
 
         if(isInited ==2) {// display
@@ -449,7 +449,7 @@ void MatPlot<T>::set(const string& v) {
     int tObj = h%100;
     int iObj = h/100;
 
-    // if( (tObj == tLine) && (iObj<vLine.size()) ) {
+    // if( (tObj == tLine) && (iObj < vLine.size()) ) {
     if( v=="k" ) { set(h,"COLOR","k"); }
     if( v=="r" ) { set(h,"COLOR","r"); }
     if( v=="b" ) { set(h,"COLOR","b"); }
@@ -508,36 +508,36 @@ void MatPlot<T>::set(const T v) {
     int h = gco();
     int tObj =h%100;
     int iObj =h/100;
-    if( (tObj == tLine) && (iObj<vLine.size()) ) {
+    if( (tObj == tLine) && (iObj < vLine.size()) ) {
         vLine[iObj].LineWidth = v;
         vLine[iObj].MarkerSize = v;    
     }
 }
 
-/// set(p,v),set(h,p,v)
+/// set(p, v), set(h, p, v)
 template <typename T>
 void MatPlot<T>::set(const string& p, const string& v) {
-    int h =gco();
-    set(h,p,v);
+    int h = gco();
+    set(h, p, v);
 }
 
 template <typename T>
 void MatPlot<T>::set(const string& p, const T v) {
-    int h =gco();
-    set(h,p,v);
+    int h = gco();
+    set(h, p, v);
 }
 
 template <typename T>
 void MatPlot<T>::set(const int h, const string& p, const string& v) {
-    int tObj =h%100;
-    int iObj =h/100;
+    int tObj = h % 100;
+    int iObj = h / 100;
     // Axes // 
-    if( (tObj == tAxes) && (iObj<vAxes.size()) ) {
+    if( (tObj == tAxes) && (iObj < vAxes.size()) ) {
         if(p=="TickDir") { vAxes[iObj].TickDir = v; }
         // if(p=="") { vLine[iObj].=v; }    
     }
     // Line // 
-    if( (tObj == tLine) && (iObj<vLine.size()) ) {
+    if( (tObj == tLine) && (iObj < vLine.size()) ) {
         if(p=="COLOR") { vLine[iObj].Color = v; vLine[iObj].MarkerEdgeColor = v; }
         if(p=="Color") { vLine[iObj].Color = v; }
         if(p=="Marker") { vLine[iObj].Marker = v; }
@@ -547,7 +547,7 @@ void MatPlot<T>::set(const int h, const string& p, const string& v) {
         // if(p=="") { vLine[iObj].=v; }    
     }
     // Surface // 
-    if( (tObj == tSurface) && (iObj<vSurface.size()) ) {
+    if( (tObj == tSurface) && (iObj < vSurface.size()) ) {
         if(p=="COLOR") { vSurface[iObj].EdgeColor = v; }
         if(p=="LineStyle") { vSurface[iObj].LineStyle =v; }
         if(p=="EdgeColor") { vSurface[iObj].EdgeColor = v; }
@@ -555,7 +555,7 @@ void MatPlot<T>::set(const int h, const string& p, const string& v) {
         // if(p=="") { vLine[iObj].=v; }    
     }    
     // Patch // 
-    if( (tObj == tPatch) && (iObj<vPatch.size()) ) {
+    if( (tObj == tPatch) && (iObj < vPatch.size()) ) {
         // if(p=="") { vPatch[iObj].=v; }    
         if(p=="COLOR") { vPatch[iObj].EdgeColor = v; }
         if(p=="LineStyle") { vPatch[iObj].LineStyle =v; }
@@ -569,17 +569,17 @@ void MatPlot<T>::set(const int h, const string& p, const T v) {
     int tObj = h%100;
     int iObj = h/100;
     // Line // 
-    if( (tObj == tLine) && (iObj<vLine.size()) ) {
+    if( (tObj == tLine) && (iObj < vLine.size()) ) {
         if(p=="LineWidth") { vLine[iObj].LineWidth =v; }    
         if(p=="MarkerSize") { vLine[iObj].MarkerSize =v; }    
     }
     // Surface // 
-    if( (tObj == tSurface) && (iObj<vSurface.size()) ) {
+    if( (tObj == tSurface) && (iObj < vSurface.size()) ) {
         if(p=="LineWidth") { vSurface[iObj].LineWidth =v; }
         // if(p=="") { vLine[iObj].=v; }    
     }
     // Patch // 
-    if( (tObj == tPatch) && (iObj<vPatch.size()) ) {
+    if( (tObj == tPatch) && (iObj < vPatch.size()) ) {
         if(p=="LineWidth") { vPatch[iObj].LineWidth =v; }
         // if(p=="") { vLine[iObj].=v; }    
     }
@@ -672,7 +672,7 @@ int MatPlot<T>::figure() {
     
     }
 
-    if(iFigure<vFigure.size()) {cf = &vFigure[iFigure];}
+    if(iFigure < vFigure.size()) {cf = &vFigure[iFigure];}
     iFigure++;
     return h;
 }
@@ -688,15 +688,15 @@ void MatPlot<T>::display_figure() {
         glClearColor(1, 1, 1, 0.);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-        glViewport(0,0, (int)(window_w),(int)(window_h));
+        glViewport(0, 0, (int)(window_w), (int)(window_h));
         glLoadIdentity();
         // gluOrtho2D( 0.0, 1.0, 0.0, 1.0 );
         glOrtho(0, 1, 0, 1, -1, 3);
     
-        for(int i = 0; i<cf->Children.size(); ++i) {
-            tObj = cf->Children[i]%100;
-            iObj = cf->Children[i]/100;
-            // printf("Obj t:%3d i:%3d \n",tObj,iObj);
+        for(int i = 0; i < cf->Children.size(); ++i) {
+            tObj = cf->Children[i] % 100;
+            iObj = cf->Children[i] / 100;
+            // printf("Obj t:%3d i:%3d \n", tObj, iObj);
         
             if(tObj == tLayer) {
                 cfr = &vLayer[iObj];
@@ -748,7 +748,7 @@ int MatPlot<T>::layer() {
     
     }
 
-    if(iLayer<vLayer.size()) {cfr = &vLayer[iLayer];}
+    if(iLayer < vLayer.size()) {cfr = &vLayer[iLayer];}
     iLayer++;
 
     axes();// default axes
@@ -772,7 +772,7 @@ void MatPlot<T>::display_layer() {
 
 template <typename T>
 void MatPlot<T>::display_layer2() {
-    int l,t,w,h,r;
+    int l, t, w, h, r;
     string s;
     l = 1;
     t = 1;
@@ -780,18 +780,18 @@ void MatPlot<T>::display_layer2() {
     h = 20;// button_height;
     r = 3;
 
-    if(xPassive<25) {
-        glViewport(0,0, (int)(window_w),(int)(window_h));
+    if(xPassive < 25) {
+        glViewport(0, 0, (int)(window_w), (int)(window_h));
         glLoadIdentity();
-        gluOrtho2D( 0.0, (int)(window_w), (int)(window_h),0 );
+        gluOrtho2D(0.0, (int)(window_w), (int)(window_h), 0);
     
         glDisable(GL_LINE_STIPPLE); 
         gl2psDisable(GL2PS_LINE_STIPPLE);
 
         glLineWidth(2);
-        glColor3d(0,0,1);
+        glColor3d(0, 0, 1);
     
-        for(int j = 0; j<vLayer.size(); ++j) {
+        for(int j = 0; j < vLayer.size(); ++j) {
             // glBegin(GL_LINE_STRIP);
             // glVertex2d(l   ,h*j );
             // glVertex2d(l   ,h*j+h );
@@ -812,7 +812,7 @@ void MatPlot<T>::display_layer2() {
                 glVertex2d(l+8 ,h*j+15 );
                 glVertex2d(l+15  ,h*j+7 );
                 glEnd();
-                // ptext(5,h*j+h-3,"[v]");
+                // ptext(5, h*j+h-3, "[v]");
             }
 
             if(vLayer[j].isVisible == false) {// []
@@ -824,15 +824,15 @@ void MatPlot<T>::display_layer2() {
                 glVertex2d(l+r   ,h*j+r );
                 glEnd();
         
-                // ptext(5,h*j+h-3,"[  ]");
+                // ptext(5, h*j+h-3,"[  ]");
             }
-            // ptext(22,h*j+h-3,vLayer[j].layername);
-            glColor3f(0, 0,1);
+            // ptext(22, h*j+h-3, vLayer[j].layername);
+            glColor3f(0, 0, 1);
             glRasterPos2f(22.f, h*j+h-6.f);
             s = vLayer[j].layername;
             gl2psText(s.c_str(), "Arial", 12);
 
-            for(int i = 0; i<s.size(); ++i) {
+            for(int i = 0; i < s.size(); ++i) {
                 glutBitmapCharacter( GLUT_BITMAP_HELVETICA_12, s[i] );
             }
         }
@@ -851,8 +851,8 @@ void MatPlot<T>::Layer_mouse(const int button, const int state, const int x, con
     h =20;// button_height;
     // cout <<"button:"<< button<<" state:"<<state<<" x:"<<x<<" y:"<<y<<endl;
     if ( button == GLUT_LEFT_BUTTON && state == GLUT_DOWN ) {// Left Click
-        for(int j = 0; j<vLayer.size(); ++j) {
-            if((l<x)&&(x<w)&&(h*j<y)&&(y<h*j+h)) {    
+        for(int j = 0; j < vLayer.size(); ++j) {
+            if((l < x) && (x < w) && (h*j < y) && (y < h*j+h)) {    
                 // visibility
                 if(vLayer[j].isVisible == true) {is= 0;}
                 if(vLayer[j].isVisible == false) {is= 1;}
@@ -862,7 +862,7 @@ void MatPlot<T>::Layer_mouse(const int button, const int state, const int x, con
                 time_layer_clicked = clock();
                 dt =(T)(time_layer_clicked - time_layer_clicked_last)/CLOCKS_PER_SEC;
                 if(dt < 0.05 ) {
-                    for(int k= 0;k<vLayer.size(); ++k) { vLayer[k].isVisible = false; }
+                    for(int k= 0; k < vLayer.size(); ++k) { vLayer[k].isVisible = false; }
                     vLayer[j].isVisible = true;
                     // cout <<"!!"<<endl;
                 }
@@ -870,7 +870,7 @@ void MatPlot<T>::Layer_mouse(const int button, const int state, const int x, con
                 time_layer_clicked_last = time_layer_clicked;
 
                 // cout<<"pushed:"<<j<<" isVisible:"<<vLayer[j].isVisible<<" "<<is<<endl;
-                for(int i = 0; i<vAxes.size(); ++i) {
+                for(int i = 0; i < vAxes.size(); ++i) {
                     if(vAxes[i].Parent =vLayer[j].id) {vAxes[i].isVisible = is;}
                 }
             }
@@ -907,8 +907,8 @@ int MatPlot<T>::gca() {
 template <typename T>
 int MatPlot<T>::axes() {
     int h = iAxes*100 + tAxes; 
-    hObj =h;
-    // int h =handle(iAxes,tAxes);
+    hObj = h;
+    // int h =handle(iAxes, tAxes);
     
     if(isInited == 0) {
         cfr->add_child(h);
@@ -919,7 +919,7 @@ int MatPlot<T>::axes() {
     
     }
 
-    if(iAxes<vAxes.size()) {ca = &vAxes[iAxes];}
+    if(iAxes < vAxes.size()) {ca = &vAxes[iAxes];}
     ca->isVisible = cfr->isVisible;
     iAxes++;
     return h;
@@ -943,7 +943,7 @@ void MatPlot<T>::display_axes() {
     // childlen // 
     int tObj;// type  of child object
     int iObj;// index of child object
-    for(int i = 0; i<ca->Children.size(); ++i) {
+    for(int i = 0; i < ca->Children.size(); ++i) {
         tObj = ca->Children[i]%100;
         iObj = ca->Children[i]/100;
 
@@ -984,7 +984,7 @@ void MatPlot<T>::display_axes_2d() {
     h = ca->Position[3];
     
     // Viewport Figure (VpF) for drawing axes
-    glViewport(0,0, (int)(window_w),(int)(window_h));
+    glViewport(0, 0, (int)(window_w),(int)(window_h));
     glLoadIdentity();
     gluOrtho2D(0.0, 1.0, 0.0, 1.0);
     
@@ -1049,7 +1049,7 @@ void MatPlot<T>::display_axes_2d() {
         if(ca->XGrid) {
             glLineWidth(GLfloat(ca->LineWidth));
             gl2psLineWidth(GLfloat(ca->LineWidth));
-            for(int i = 0; i<ca->XTick.size(); ++i) {
+            for(int i = 0; i < ca->XTick.size(); ++i) {
                 // cout <<"grid "<<gridlinestyle<<" "<<ca->XTick[i]<<endl;
 
                 if(gridlinestyle == 1) {// -
@@ -1083,7 +1083,7 @@ void MatPlot<T>::display_axes_2d() {
         }
 
         if(ca->YGrid) {        
-            for(int i = 0; i<ca->YTick.size(); ++i) {
+            for(int i = 0; i < ca->YTick.size(); ++i) {
                 if(gridlinestyle == 1) {// -
                     glDisable(GL_LINE_STIPPLE); 
                     gl2psDisable(GL2PS_LINE_STIPPLE);
@@ -1119,7 +1119,7 @@ void MatPlot<T>::display_axes_2d() {
         gl2psDisable(GL2PS_LINE_STIPPLE);
         // TODO precise adjustment of tick location
         // x tick 
-        for(int i = 0; i<ca->XTick.size(); ++i) {
+        for(int i = 0; i < ca->XTick.size(); ++i) {
             glBegin(GL_LINE_STRIP);
             glVertex2d(GLdouble(ctx2(ca->XTick[i])), GLdouble(b) );
             glVertex2d(GLdouble(ctx2(ca->XTick[i])), GLdouble(b + tickdir*0.01) );// b-0.02*h
@@ -1128,15 +1128,15 @@ void MatPlot<T>::display_axes_2d() {
 
         // x tick label
         if(ca->TickLabel) {
-            for(int i = 0; i<ca->XTick.size(); ++i) {
+            for(int i = 0; i < ca->XTick.size(); ++i) {
                 sprintf(ctmp, "%4.1f", ca->XTick[i]);
-                // ptext( ctx2(ca->XTick[i])-0.02, b-0.025,ctmp );// b-0.05*h
+                // ptext( ctx2(ca->XTick[i])-0.02, b-0.025, ctmp );// b-0.05*h
                 ptext( ctx2(ca->XTick[i])-(T)num_char*char_w/window_w/2.f, b-offset-1.f*char_h/window_h, ctmp );// b-0.05*h
             }
         }
 
         // y tick 
-        for(int i = 0; i<ca->YTick.size(); ++i) {
+        for(int i = 0; i < ca->YTick.size(); ++i) {
             glBegin(GL_LINE_STRIP);
             glVertex2d(GLdouble(l), GLdouble(cty2(ca->YTick[i])) );
             glVertex2d(GLdouble(l+tickdir*0.01), GLdouble(cty2(ca->YTick[i])) );        
@@ -1145,9 +1145,9 @@ void MatPlot<T>::display_axes_2d() {
 
         // y tick label
         if(ca->TickLabel) {
-            for(int i = 0; i<ca->YTick.size(); ++i) {
+            for(int i = 0; i < ca->YTick.size(); ++i) {
                 sprintf(ctmp,"%4.1f",ca->YTick[i]);
-                // ptext( l-0.05,cty2(ca->YTick[i])-0.0,ctmp );
+                // ptext( l-0.05, cty2(ca->YTick[i])-0.0, ctmp );
                 ptext( T(l- T(num_char)*char_w/window_w-offset), T(cty2(ca->YTick[i])-0.5*char_h/window_h), ctmp );
             }
         }
@@ -1178,7 +1178,7 @@ template <typename T>
 void MatPlot<T>::display_axes_3d() {
     
     char ctmp[255];
-    T l,b,w,h;// left,bottom,width,height
+    T l, b, w, h;// left, bottom, width, height
     T r = 0.01f;
     
     l = ca->Position[0];
@@ -1211,25 +1211,25 @@ void MatPlot<T>::display_axes_3d() {
               ca->CameraUpVector[0],ca->CameraUpVector[1],ca->CameraUpVector[2]);
     
     /*
-    // x, y,z axes for test
-    glColor3f(1,0,0);
+    // x, y, z axes for test
+    glColor3f(1, 0, 0);
     glBegin(GL_LINE_STRIP);
-    glVertex3d(0,0,0); glVertex3d(1,0,0);
+    glVertex3d(0, 0, 0); glVertex3d(1, 0, 0);
     glEnd();
     
-    glColor3f(0,1,0);
+    glColor3f(0, 1, 0);
     glBegin(GL_LINE_STRIP);
-    glVertex3d(0,0,0); glVertex3d(0,1,0);
+    glVertex3d(0, 0, 0); glVertex3d(0, 1, 0);
     glEnd();
     
-    glColor3f(0,0,1);
+    glColor3f(0, 0, 1);
     glBegin(GL_LINE_STRIP);
-    glVertex3d(0,0,0); glVertex3d(0,0,1);
+    glVertex3d(0, 0, 0); glVertex3d(0, 0, 1);
     glEnd();
     
-    glColor3f(0,0,0);
+    glColor3f(0, 0, 0);
     glBegin(GL_LINE_LOOP);
-    glVertex3d(-1,-1,0); glVertex3d(1,-1,0); glVertex3d(1,1,0); glVertex3d(-1,1,0);
+    glVertex3d(-1, -1, 0); glVertex3d(1, -1, 0); glVertex3d(1, 1, 0); glVertex3d(-1, 1, 0);
     glEnd();
     */
    
@@ -1246,10 +1246,10 @@ void MatPlot<T>::display_axes_3d() {
         int signx, signy;
         cta0 = ca->cta; 
         cta0 = fmod(ca->cta, T(360));
-        if((  0<= cta0)&&(cta0< 90)) {signx = 1; signy= 1;}
-        if(( 90<= cta0)&&(cta0<190)) {signx =-1; signy= 1;}
-        if((180<= cta0)&&(cta0<270)) {signx =-1; signy=-1;}
-        if((270<= cta0)&&(cta0<360)) {signx = 1; signy=-1;}
+        if((  0<= cta0)&&(cta0< 90)) {signx = 1; signy = 1;}
+        if(( 90<= cta0)&&(cta0<190)) {signx = -1; signy = 1;}
+        if((180<= cta0)&&(cta0<270)) {signx = -1; signy = -1;}
+        if((270<= cta0)&&(cta0<360)) {signx = 1; signy = -1;}
 
         glColor3f(0.f, 0.f, 0.f);
 
@@ -1272,21 +1272,21 @@ void MatPlot<T>::display_axes_3d() {
 
         // Tick // 
         // x
-        for(int i = 0; i<ca->XTick.size(); ++i) {
+        for(int i = 0; i < ca->XTick.size(); ++i) {
             glBegin(GL_LINE_STRIP);
             glVertex3d(GLdouble(ct3x(ca->XTick[i])), signy, -1 );
             glVertex3d(GLdouble(ct3x(ca->XTick[i])), signy*r1, -1 );
             glEnd();
         }
         // y
-        for(int i = 0; i<ca->YTick.size(); ++i) {
+        for(int i = 0; i < ca->YTick.size(); ++i) {
             glBegin(GL_LINE_STRIP);
             glVertex3d( signx   , ct3y(ca->YTick[i]), -1 );
             glVertex3d( signx*r1, ct3y(ca->YTick[i]), -1 );
             glEnd();
         }
         // z
-        for(int i = 0; i<ca->ZTick.size(); ++i) {
+        for(int i = 0; i < ca->ZTick.size(); ++i) {
             glBegin(GL_LINE_STRIP);
             glVertex3d( signy , -signx , ct3z(ca->ZTick[i]) );
             glVertex3d( signy*r1, -signx, ct3z(ca->ZTick[i]) );
@@ -1295,17 +1295,17 @@ void MatPlot<T>::display_axes_3d() {
         // Tick Label // 
         if(ca->TickLabel) {
             // x
-            for(int i = 0; i<ca->XTick.size(); ++i) {
+            for(int i = 0; i < ca->XTick.size(); ++i) {
                 sprintf(ctmp, "%4.1f", ca->XTick[i]);
                 ptext3c(T(ct3x(ca->XTick[i])), T(signy*r2), T(-1), ctmp );
             }
             // y    
-            for(int i = 0; i<ca->YTick.size(); ++i) {
+            for(int i = 0; i < ca->YTick.size(); ++i) {
                 sprintf(ctmp, "%4.1f", ca->YTick[i]);
                 ptext3c(T(signx*r2), T(ct3y(ca->YTick[i])), T(-1), ctmp );
             }
             // z
-            for(int i = 0; i<ca->ZTick.size(); ++i) {
+            for(int i = 0; i < ca->ZTick.size(); ++i) {
                 sprintf(ctmp, "%4.1f", ca->ZTick[i]);
                 ptext3c(T(signy*r2), T(-signx), T(ct3z(ca->ZTick[i])), ctmp );
             }
@@ -1322,7 +1322,7 @@ void MatPlot<T>::display_axes_3d() {
 template <typename T>
 void MatPlot<T>::display_axes_colorbar() {
     char ctmp[100];
-    T l, b, w, h;// left,bottom,width,height
+    T l, b, w, h;// left, bottom, width, height
     T r = T(0.01);
 
     l = ca->Position[0];
@@ -1331,7 +1331,7 @@ void MatPlot<T>::display_axes_colorbar() {
     h = ca->Position[3];
         
     // Viewport Figure (VpF) for drawing axes
-    glViewport(0,0, int(window_w), int(window_h));
+    glViewport(0, 0, int(window_w), int(window_h));
     glLoadIdentity();
     gluOrtho2D( 0.0, 1.0, 0.0, 1.0 );
     
@@ -1351,14 +1351,14 @@ void MatPlot<T>::display_axes_colorbar() {
         glEnd();        
         
         // z tick 
-        for(int i = 0; i<ca->ZTick.size(); ++i) {
+        for(int i = 0; i < ca->ZTick.size(); ++i) {
         glBegin(GL_LINE_STRIP);
         glVertex2d(GLdouble(l+w), GLdouble(cty2(ca->ZTick[i])) );
         glVertex2d(GLdouble(l+w+0.01), GLdouble(cty2(ca->ZTick[i])) );        
         glEnd();
         }
         // z tick number
-        for(int i = 0; i<ca->ZTick.size(); ++i) {
+        for(int i = 0; i < ca->ZTick.size(); ++i) {
         sprintf(ctmp, "%4.1f",ca->ZTick[i]);
         ptext(T(l+w+0.01), T(cty2(ca->ZTick[i])), ctmp );
         }
@@ -1366,7 +1366,7 @@ void MatPlot<T>::display_axes_colorbar() {
 
     vector<T> rgb;
     size_t n = cmap.size();
-    for(int i = 0; i<n; ++i) {
+    for(int i = 0; i < n; ++i) {
         rgb = ca->ColorMap[i];
         glColor3f(GLfloat(rgb[0]), GLfloat(rgb[1]), GLfloat(rgb[2]));
         
@@ -1401,7 +1401,7 @@ void MatPlot<T>::Axes_mouse(const int button, const int state, const int x, cons
                 w = ca->Position[2];
                 h = ca->Position[3];
             
-                if( (l<= x)&&(X<=l+w)&&(b<= y)&&(Y<=b+h)&&(ca->Mouse == 1) ) {
+                if( (l<= x) && (X <= l+w) && (b <= y) && (Y <= b+h) && (ca->Mouse == 1) ) {
                     rx = (X-l)/w;
                     ry = (Y-b)/h;
                     mx = rx*(ca->XLim[1]-ca->XLim[0]) + ca->XLim[0];
@@ -1415,7 +1415,7 @@ void MatPlot<T>::Axes_mouse(const int button, const int state, const int x, cons
         // axes select // 
         iAxesSelected =-1;
         
-        for(int i = 0; i<vAxes.size(); ++i) {
+        for(int i = 0; i < vAxes.size(); ++i) {
             ca = &vAxes[i];
             ca->Selected = 0;
             if(ca->isVisible) {
@@ -1424,7 +1424,7 @@ void MatPlot<T>::Axes_mouse(const int button, const int state, const int x, cons
                 w = ca->Position[2];
                 h = ca->Position[3];
             
-                if( (l<= x)&&(X<=l+w)&&(b<= y)&&(Y<=b+h) ) {
+                if( (l <= x)&&(X <= l+w)&&(b<= y)&&(Y <= b+h) ) {
                 iAxesSelected = i;
                 ca->Selected = 1;
                 if(ca->View == 1) {// 3D            
@@ -1432,7 +1432,7 @@ void MatPlot<T>::Axes_mouse(const int button, const int state, const int x, cons
                     phiButtonDown = ca->phi;
                 }
                 // cout << "axes "<< i << " is selected "<< vAxes[i].selected()  << endl;
-                // cout <<"(cta,phi) = "<< ctaButtonDown <<" "<< phiButtonDown << endl;        
+                // cout <<"(cta , phi) = "<< ctaButtonDown <<" "<< phiButtonDown << endl;        
                 }
             }
         }
@@ -1441,28 +1441,28 @@ void MatPlot<T>::Axes_mouse(const int button, const int state, const int x, cons
 
 template <typename T>
 void MatPlot<T>::Axes_motion(const int x, const int y) {
-    T phi,cta;
-    for(int i = 1; i<vAxes.size(); ++i) {
+    T phi, cta;
+    for(int i = 1; i < vAxes.size(); ++i) {
         ca = &vAxes[i];
-        if((ca->Selected)&&(ca->View== 1)) {
+        if((ca->Selected)&&(ca->View == 1)) {
             cta = ctaButtonDown - (T) (x - xButtonDown)*1;
             phi = phiButtonDown + (T) (y - yButtonDown)*1;
-            if(phi>= 90) {phi = 90;}
-            if(phi<=-90) {phi =-90;}
-            if(cta>360) {cta+=-360;}
-            if(cta<  0) {cta+= 360;}
+            if(phi >= 90) {phi = 90;}
+            if(phi <=-90) {phi =- 90;}
+            if(cta > 360) {cta += -360;}
+            if(cta < 0) {cta += 360;}
         
             ca->phi = phi;
             ca->cta = cta;
-            // cout <<"( phi,cta ) = ( "<< vAxes[i].phi <<","<< vAxes[i].cta <<" )"<<endl;
+            // cout <<"( phi, cta ) = ( "<< vAxes[i].phi <<","<< vAxes[i].cta <<" )"<<endl;
         }
     }
 
-    // T phi,cta;
+    // T phi, cta;
     // phi = phiButtonDown +(T) (y - yButtonDown)*0.01;
     // cta = ctaButtonDown -(T) (x - xButtonDown)*0.01;
-    // cout <<"( dx,dy ) = ( "<< x-xButtonDown <<","<<y-yButtonDown <<" )"<<endl;
-    // cout <<"( phi,cta ) = ( "<< phi <<","<< cta <<" )"<<endl;
+    // cout <<"( dx, dy ) = ( "<< x-xButtonDown <<","<<y-yButtonDown <<" )"<<endl;
+    // cout <<"( phi, cta ) = ( "<< phi <<","<< cta <<" )"<<endl;
     
     // glutPostRedisplay(); 
 }
@@ -1473,7 +1473,7 @@ template <typename T>
 int MatPlot<T>::subplot(const int m, const int n, const int p) {    
     int h = axes();
     int ix, iy;
-    ix = (p-1)%n;
+    ix = (p-1) % n;
     iy = (m-1) - (p-1)/n;
     ca->Position[0] = T((ix+0.13)/n);
     ca->Position[1] = T((iy+0.11)/m);
@@ -1496,7 +1496,7 @@ int MatPlot<T>::colorbar() {
     b = ca->Position[1];
     w = ca->Position[2];
     h = ca->Position[3];
-    T zmin,zmax;
+    T zmin, zmax;
     zmin = ca->ZLim[0];
     zmax = ca->ZLim[1];
     
@@ -1600,7 +1600,7 @@ void MatPlot<T>::zlabel(const string& s) {
 }
 
 template <typename T>
-void MatPlot<T>::mouse_capture(T *xmouse,T *ymouse) {
+void MatPlot<T>::mouse_capture(T *xmouse, T *ymouse) {
     ca->Mouse = 1;
     // ca->XMouse = xmouse;
     // ca->YMouse = ymouse;
@@ -1610,7 +1610,7 @@ void MatPlot<T>::mouse_capture(T *xmouse,T *ymouse) {
 template <typename T>
 T Fmax(const vector<T>& x) {
     T maxf = T(-1e19);
-    for(int i = 0; i<x.size(); ++i) {
+    for(int i = 0; i < x.size(); ++i) {
         if(x[i]>maxf) {maxf = x[i];}
     }
     return maxf;
@@ -1619,7 +1619,7 @@ T Fmax(const vector<T>& x) {
 template <typename T>
 T Fmin(const vector<T>& x) {
     T minf = T(1e19);
-    for(int i = 0; i<x.size(); ++i) {
+    for(int i = 0; i < x.size(); ++i) {
         if(x[i]<minf) {minf = x[i];}
     }
     return minf;
@@ -1628,8 +1628,8 @@ T Fmin(const vector<T>& x) {
 template <typename T>
 T Fmax(const vector<vector<T>>& x) {
     T maxf = T(-1e19);
-    for(int i = 0; i<x.size(); ++i) {
-        for(int j = 0; j<x[i].size(); ++j) {
+    for(int i = 0; i < x.size(); ++i) {
+        for(int j = 0; j < x[i].size(); ++j) {
             if(x[i][j] > maxf) {maxf = x[i][j];}
         }
     }
@@ -1639,8 +1639,8 @@ T Fmax(const vector<vector<T>>& x) {
 template <typename T>
 T Fmin(const vector<vector<T>>& x) {
     T minf = T(1e19);
-    for(int i = 0; i<x.size(); ++i) {
-        for(int j = 0; j<x[i].size(); ++j) {
+    for(int i = 0; i < x.size(); ++i) {
+        for(int j = 0; j < x[i].size(); ++j) {
             if(x[i][j] < minf) {minf = x[i][j];}
         }
     }
@@ -1660,10 +1660,10 @@ int MatPlot<T>::line() {
     }
 
     if(isInited == 1) {
-        if(iLine<vLine.size()) { vLine[iLine].reset(); }
+        if(iLine < vLine.size()) { vLine[iLine].reset(); }
     }
 
-    if(iLine<vLine.size()) { cl = &vLine[iLine]; }
+    if(iLine < vLine.size()) { cl = &vLine[iLine]; }
     iLine++;    
     return h;
 }
@@ -1674,35 +1674,35 @@ void MatPlot<T>::line_config() {
     T t; 
     n = cl->XData.size();
     if(ca->XScale == 0) {// linear
-        for(int i = 0; i<n; ++i) {
+        for(int i = 0; i < n; ++i) {
             t = cl->XData[i];        
-            if(ca->xmin>t) {ca->xmin = t;}
-            if(ca->xmax<t) {ca->xmax = t;}
+            if(ca->xmin > t) {ca->xmin = t;}
+            if(ca->xmax < t) {ca->xmax = t;}
         }
     }
 
     if(ca->XScale == 1) {// log
-        for(int i = 0; i<n; ++i) {
+        for(int i = 0; i < n; ++i) {
             t = cl->XData[i];        
-            if((ca->xmin>t)&&(t>0)) {ca->xmin = t;}
-            if(ca->xmax<t) {ca->xmax = t;}
+            if((ca->xmin > t)&&(t > 0)) {ca->xmin = t;}
+            if(ca->xmax < t) {ca->xmax = t;}
         }
     }
 
     T y;
     n = cl->YData.size();
-    for(int i = 0; i<n; ++i) {
+    for(int i = 0; i < n; ++i) {
         y = cl->YData[i];        
-        if(ca->ymin>y) { ca->ymin = y; }
-        if(ca->ymax<y) { ca->ymax = y; }
+        if(ca->ymin > y) { ca->ymin = y; }
+        if(ca->ymax < y) { ca->ymax = y; }
     }
 
     T z;
     n = cl->ZData.size();
-    for(int i = 0; i<n; ++i) {
+    for(int i = 0; i < n; ++i) {
         z = cl->ZData[i];  
-        if(ca->zmin>z) {ca->zmin = z;}
-        if(ca->zmax<z) {ca->zmax = z;}
+        if(ca->zmin > z) {ca->zmin = z;}
+        if(ca->zmax < z) {ca->zmax = z;}
     }
 }
 
@@ -1737,12 +1737,12 @@ template <typename T>
 void MatPlot<T>::end() {}
 
 template <typename T>
-void  MatPlot<T>::vertex(T x,T y) {
+void  MatPlot<T>::vertex(T x, T y) {
     if(cfr->isVisible) {
-        if(ca->xmin>x) {ca->xmin = x;}
-        if(ca->xmax<x) {ca->xmax = x;}
-        if(ca->ymin>y) {ca->ymin = y;}
-        if(ca->ymax<y) {ca->ymax = y;}        
+        if(ca->xmin > x) {ca->xmin = x;}
+        if(ca->xmax < x) {ca->xmax = x;}
+        if(ca->ymin > y) {ca->ymin = y;}
+        if(ca->ymax < y) {ca->ymax = y;}        
         cl->XData.push_back(x);
         cl->YData.push_back(y);
     }
@@ -1754,7 +1754,7 @@ int MatPlot<T>::plot(const vector<T>& y) {
     size_t n = y.size();
     vector<T> x;
     x.resize(n);    
-    for(size_t i = 0; i<n; ++i) {
+    for(size_t i = 0; i < n; ++i) {
         x[i] = T(1.0*i/(n-1));
     }
     return line(x, y);
@@ -1768,8 +1768,8 @@ int MatPlot<T>::plot(const vector<T>& x, const vector<T>& y) {
 template <typename T>
 int MatPlot<T>::plot(const valarray<T>& x, const valarray<T>& y) {    
     vector<T> xx, yy;
-    for(int i = 0; i<x.size(); ++i) {xx.push_back(x[i]);}
-    for(int i = 0; i<y.size(); ++i) {yy.push_back(y[i]);}    
+    for(int i = 0; i < x.size(); ++i) {xx.push_back(x[i]);}
+    for(int i = 0; i < y.size(); ++i) {yy.push_back(y[i]);}    
     return line(xx, yy);
 }
 
@@ -1815,10 +1815,10 @@ int MatPlot<T>::loglog(const vector<T>& x, const vector<T>& y) {
 /// errorbar
 template <typename T>
 void MatPlot<T>::vertex(const T x, const T y, const T ep, const T em) {// for errorbar
-    if(ca->xmin>x) {ca->xmin = x;}
-    if(ca->xmax<x) {ca->xmax = x;}
-    if(ca->ymin>y+ep) {ca->ymin = y+ep;}
-    if(ca->ymax<y-em) {ca->ymax = y-em;}
+    if(ca->xmin > x) {ca->xmin = x;}
+    if(ca->xmax < x) {ca->xmax = x;}
+    if(ca->ymin > y+ep) {ca->ymin = y + ep;}
+    if(ca->ymax < y-em) {ca->ymax = y - em;}
     cl->XData.push_back(x);
     cl->YData.push_back(y);
     cl->YPData.push_back(ep);
@@ -1828,7 +1828,7 @@ void MatPlot<T>::vertex(const T x, const T y, const T ep, const T em) {// for er
 template <typename T>
 int MatPlot<T>::errorbar(const vector<T>& x, const vector<T>& y, const vector<T>& e) {    
     begin();    
-    for(int i = 0; i<x.size(); ++i) { vertex(x[i], y[i], e[i], e[i]); }
+    for(int i = 0; i < x.size(); ++i) { vertex(x[i], y[i], e[i], e[i]); }
     end();
     cl->Errorbar = 1;
     return 0;
@@ -1837,7 +1837,7 @@ int MatPlot<T>::errorbar(const vector<T>& x, const vector<T>& y, const vector<T>
 template <typename T>
 int MatPlot<T>::errorbar(const vector<T>& x, const vector<T>& y, const vector<T>& ep, const vector<T>& em) {
     begin();
-    for(int i = 0; i<x.size(); ++i) { 
+    for(int i = 0; i < x.size(); ++i) { 
         vertex(x[i], y[i], ep[i], em[i]); 
     }
     end();
@@ -1849,12 +1849,12 @@ int MatPlot<T>::errorbar(const vector<T>& x, const vector<T>& y, const vector<T>
 template <typename T>
 void MatPlot<T>::vertex(const T x, const T y, const T z) {
     if(cfr->isVisible) {
-        if(ca->xmin>x) {ca->xmin = x;}
-        if(ca->xmax<x) {ca->xmax = x;}
-        if(ca->ymin>y) {ca->ymin = y;}
-        if(ca->ymax<y) {ca->ymax = y;}
-        if(ca->zmin>z) {ca->zmin = z;}
-        if(ca->zmax<z) {ca->zmax = z;}
+        if(ca->xmin > x) {ca->xmin = x;}
+        if(ca->xmax < x) {ca->xmax = x;}
+        if(ca->ymin > y) {ca->ymin = y;}
+        if(ca->ymax < y) {ca->ymax = y;}
+        if(ca->zmin > z) {ca->zmin = z;}
+        if(ca->zmax < z) {ca->zmax = z;}
         cl->XData.push_back(x);
         cl->YData.push_back(y);
         cl->ZData.push_back(z);
@@ -1868,7 +1868,7 @@ template <typename T>
 int MatPlot<T>::plot3(const vector<T>& x, const vector<T>& y, const vector<T>& z) {
     ca->View= 1;
     begin();
-    for(int i = 0; i<x.size(); ++i) { vertex(x[i], y[i],z[i]); }
+    for(int i = 0; i < x.size(); ++i) { vertex(x[i], y[i],z[i]); }
     end();
     return 0;
 }
@@ -1912,8 +1912,8 @@ void MatPlot<T>::display_line() {
             }
             if(cl->XData.size()) {
                 glBegin(GL_LINE_STRIP);
-                for(int i = 0; i<cl->XData.size(); ++i) {
-                    // printf("i:%d %f %f\n",i,xx, yy);
+                for(int i = 0; i < cl->XData.size(); ++i) {
+                    // printf("i:%d %f %f\n", i, xx, yy);
                     xx = ctx(cl->XData[i]);
                     yy= cty(cl->YData[i]);
                     glVertex2d(xx, yy);
@@ -1932,7 +1932,7 @@ void MatPlot<T>::display_line() {
             glDisable(GL_LINE_STIPPLE); 
             gl2psDisable(GL2PS_LINE_STIPPLE);
 
-            for(int i = 0; i<cl->XData.size(); ++i) {
+            for(int i = 0; i < cl->XData.size(); ++i) {
             xx = ctx(cl->XData[i]);
             yy = cty(cl->YData[i]);        
         
@@ -1986,7 +1986,7 @@ void MatPlot<T>::display_line() {
             }
             if(cl->Marker =="o") {// o
                 glBegin(GL_LINE_LOOP);
-                for(int i = 0; i<20; i++) {
+                for(int i = 0; i < 20; i++) {
                 glVertex2d(GLdouble(xx+rx*cos(2*PI*(T)i/(T)(20))),
                        GLdouble(yy+ry*sin(2*PI*(T)i/(T)(20))));
                 }
@@ -2031,7 +2031,7 @@ void MatPlot<T>::display_line() {
             gl2psDisable(GL2PS_LINE_STIPPLE);
             // r = cl->MarkerSize/500;
 
-            for(int i = 0; i<cl->XData.size(); ++i) {
+            for(int i = 0; i < cl->XData.size(); ++i) {
                 xx = ctx(cl->XData[i]);
                 yy = cty(cl->YData[i]);
                 yyp = cty(cl->YData[i] + cl->YPData[i]);
@@ -2061,7 +2061,7 @@ void MatPlot<T>::display_line() {
     // 3D // 
     if(ca->View== 1) {
         glBegin(GL_LINE_STRIP);
-        for(int i = 0; i<cl->XData.size(); ++i) {
+        for(int i = 0; i < cl->XData.size(); ++i) {
             glVertex3d(GLdouble(ct3x(cl->XData[i])),
                     GLdouble(ct3y(cl->YData[i])),
                     GLdouble(ct3z(cl->ZData[i])));
@@ -2083,7 +2083,7 @@ int MatPlot<T>::surface() {
     if(isInited == 1) {
     
     }
-    if(iSurface<vSurface.size()) {cs= &vSurface[iSurface];}
+    if(iSurface < vSurface.size()) {cs= &vSurface[iSurface];}
     iSurface++;
     return h;    
 }
@@ -2105,7 +2105,7 @@ void MatPlot<T>::surface_config() {
     if(nzi) {ny = nzi; nx = nzj;}
     if(nci) {ny = nci; nx = ncj;}
     
-    // printf("%s %s:%d: %d %d %d %d \n", __func__, __FILE__, __LINE__,nzi,nci,nx,ny);
+    // printf("%s %s:%d: %d %d %d %d \n", __func__, __FILE__, __LINE__, nzi, nci, nx, ny);
     if(cs->XData.size()== 0) {
         cs->XData.resize(1); 
         cs->XData[0] = linspace(T(1.0), T(nx), nx);
@@ -2116,12 +2116,12 @@ void MatPlot<T>::surface_config() {
     }
     
     // config data range
-    ca->xmax = max(Fmax(cs->XData),ca->xmax);
-    ca->xmin = min(Fmin(cs->XData),ca->xmin);
-    ca->ymax = max(Fmax(cs->YData),ca->ymax);
-    ca->ymin = min(Fmin(cs->YData),ca->ymin);
-    ca->zmax = max(Fmax(cs->ZData),ca->zmax );
-    ca->zmin = min(Fmin(cs->ZData),ca->zmin );
+    ca->xmax = max(Fmax(cs->XData), ca->xmax);
+    ca->xmin = min(Fmin(cs->XData), ca->xmin);
+    ca->ymax = max(Fmax(cs->YData), ca->ymax);
+    ca->ymin = min(Fmin(cs->YData), ca->ymin);
+    ca->zmax = max(Fmax(cs->ZData), ca->zmax );
+    ca->zmin = min(Fmin(cs->ZData), ca->zmin );
 
     // set CLim 
     // note: first called surface effects CLim
@@ -2133,12 +2133,12 @@ void MatPlot<T>::surface_config() {
     // CData !!!
     if( (cs->CData.size()== 0) && (cs->CDataIndex.size()) ) {
     vector<T> rgb;
-    // vector<vector<vector<T>>> cdata(ny,nx);
+    // vector<vector<vector<T>>> cdata(ny, nx);
     vector<vector<vector<T>>> cdata(ny);
     
-    for(int i = 0; i<ny; ++i) {
+    for(int i = 0; i < ny; ++i) {
         cdata[i].resize(nx);
-        for(int j = 0; j<nx; ++j) {
+        for(int j = 0; j < nx; ++j) {
             rgb = map2color(cs->CDataIndex[i][j], ca->CLim[0], ca->CLim[1]);
             cdata[i][j] = rgb;
         }
@@ -2500,7 +2500,7 @@ void MatPlot<T>::display_surface_2d() {
     nxi = cs->XData.size(); if(nxi) {nxj = cs->XData[0].size();}
     nyi = cs->YData.size(); if(nyi) {nyj = cs->YData[0].size();}
 
-    // printf("%s %s:%d  (%d %d) (%d %d) (%d %d) \n", __func__, __FILE__, __LINE__,nxi,nxj,nyi,nyj,nzi,nzj);
+    // printf("%s %s:%d  (%d %d) (%d %d) (%d %d) \n", __func__, __FILE__, __LINE__, nxi, nxj, nyi, nyj, nzi, nzj);
 
     // (Z) // do not use
         if(nxi == 0) {
@@ -2511,9 +2511,9 @@ void MatPlot<T>::display_surface_2d() {
             rgb = ColorSpec2RGB(cs->EdgeColor);
             glColor3d(GLfloat(rgb[0]), GLfloat(rgb[1]), GLfloat(rgb[2]));
         
-            for(int i = 0; i<nzi; ++i) {        
+            for(int i = 0; i < nzi; ++i) {        
                 glBegin(GL_LINE_STRIP); // TODO add more style            
-                for(int j = 0; j<nzj; ++j) { 
+                for(int j = 0; j < nzj; ++j) { 
                     glVertex2d(ctx(ca->XLim[0]+(ca->XLim[1]-ca->XLim[0])*(T)(j)/(nzj-1)),
                            cty(ca->YLim[0]+(ca->YLim[1]-ca->YLim[0])*(T)(i)/(nzi-1)));
                 }
@@ -2532,8 +2532,8 @@ void MatPlot<T>::display_surface_2d() {
         }
         // Face 
         if(cs->FaceColor != "none") {
-            for(int i = 0; i<nzi-1; ++i) {
-                for(int j = 0; j<nzj-1; ++j) {
+            for(int i = 0; i < nzi-1; ++i) {
+                for(int j = 0; j < nzj-1; ++j) {
             
                     rgb = ColorSpec2RGB(cs->FaceColor);        
                     if(cs->FaceColor =="flat") { rgb = cs->CData[i][j]; }
@@ -2554,9 +2554,9 @@ void MatPlot<T>::display_surface_2d() {
         } // Face
     }
 
-    // (x, y,Z) // 
+    // (x, y, Z) // 
         if(nxi == 1) {
-        // printf("%s %s:%d  %d %d \n", __func__, __FILE__, __LINE__,nxj,nyj);
+        // printf("%s %s:%d  %d %d \n", __func__, __FILE__, __LINE__, nxj, nyj);
         // Edge
         if(cs->EdgeColor != "none") {        
         
@@ -2564,9 +2564,9 @@ void MatPlot<T>::display_surface_2d() {
             rgb = ColorSpec2RGB(cs->EdgeColor);
             glColor3d(rgb[0],rgb[1],rgb[2]);
         
-            for(int i = 0; i<nyj; ++i) {    
+            for(int i = 0; i < nyj; ++i) {    
                 glBegin(GL_LINE_STRIP); // TODO add more style            
-                // for(int j = 0; j<nxj; ++j) {
+                // for(int j = 0; j < nxj; ++j) {
                     // glVertex2d(ctx(cs->XData[0][j]),cty(cs->YData[0][i]));
                 // }
                 glVertex2d(GLdouble(ctx(cs->XData[0][0])), GLdouble(cty(cs->YData[0][i])) );
@@ -2575,9 +2575,9 @@ void MatPlot<T>::display_surface_2d() {
                 glEnd();
             }
 
-            for(int j = 0; j<nxj; ++j) {                 
+            for(int j = 0; j < nxj; ++j) {                 
                 glBegin(GL_LINE_STRIP);             
-                // for(int i = 0; i<nxj; ++i) {
+                // for(int i = 0; i < nxj; ++i) {
                 // glVertex2d(ctx(cs->XData[0][j]), cty(cs->YData[0][i]));
                 // }
                 glVertex2d(GLdouble(ctx(cs->XData[0][j])), GLdouble(cty(cs->YData[0][0])));
@@ -2587,8 +2587,8 @@ void MatPlot<T>::display_surface_2d() {
         }  
         // Face
         if(cs->FaceColor != "none") {
-            for(int i = 0; i<nyj-1; ++i) {                         
-                for(int j = 0; j<nxj-1; ++j) { 
+            for(int i = 0; i < nyj-1; ++i) {                         
+                for(int j = 0; j < nxj-1; ++j) { 
                     // color 
                     rgb = ColorSpec2RGB(cs->FaceColor);
                     if(cs->FaceColor =="flat") { rgb = cs->CData[i][j]; }
@@ -2609,7 +2609,7 @@ void MatPlot<T>::display_surface_2d() {
         }
     } // nxi == 1
     
-    // (X, y,C) // 
+    // (X, y, C) // 
     if(nxi>1) {
         // Edge
         // printf("%s %s:%d\n", __func__, __FILE__, __LINE__);
@@ -2618,17 +2618,17 @@ void MatPlot<T>::display_surface_2d() {
             rgb = ColorSpec2RGB(cs->EdgeColor);
             glColor3d(GLdouble(rgb[0]), GLdouble(rgb[1]), GLdouble(rgb[2]));
         
-            for(int i = 0; i<nxi; ++i) {        
+            for(int i = 0; i < nxi; ++i) {        
                 glBegin(GL_LINE_STRIP); // TODO add more style            
-                for(int j = 0; j<nxj; ++j) { 
+                for(int j = 0; j < nxj; ++j) { 
                     glVertex2d(GLdouble(ctx(cs->XData[i][j])),
                            GLdouble(cty(cs->YData[i][j])));
                 }
                 glEnd();
             }
-            for(int j = 0; j<nxi; ++j) {                 
+            for(int j = 0; j < nxi; ++j) {                 
                 glBegin(GL_LINE_STRIP);             
-                for(int i = 0; i<nxj; ++i) {
+                for(int i = 0; i < nxj; ++i) {
                     glVertex2d(GLdouble(ctx(cs->XData[i][j])),
                            GLdouble(cty(cs->YData[i][j])));
                 }
@@ -2637,8 +2637,8 @@ void MatPlot<T>::display_surface_2d() {
         }  
         // Face
         if(cs->FaceColor != "none") {
-            for(int i = 0; i<nxi-1; ++i) {                         
-            for(int j = 0; j<nxj-1; ++j) { 
+            for(int i = 0; i < nxi-1; ++i) {                         
+            for(int j = 0; j < nxj-1; ++j) { 
                 // color 
                 rgb = ColorSpec2RGB(cs->FaceColor);        
                 if(cs->FaceColor =="flat") {rgb = cs->CData[i][j]; }
@@ -2668,11 +2668,11 @@ void MatPlot<T>::display_surface_3d() {
     size_t nx = cs->ZData[0].size();
     
         if(cs->XData.size()== 1) {
-        // (x, y,Z);
+        // (x, y, Z);
         // Face
         if(cs->FaceColor != "none") {
-            for(int i = 0; i<ny-1; ++i) {                         
-                for(int j = 0; j<nx-1; ++j) { 
+            for(int i = 0; i < ny-1; ++i) {                         
+                for(int j = 0; j < nx-1; ++j) { 
                     rgb = ColorSpec2RGB(cs->FaceColor);        
                     glColor3d(rgb[0], rgb[1], rgb[2]);
                     if(cs->FaceColor =="flat") {
@@ -2710,9 +2710,9 @@ void MatPlot<T>::display_surface_3d() {
             rgb = ColorSpec2RGB(cs->EdgeColor);
             glColor3d(GLdouble(rgb[0]), GLdouble(rgb[1]), GLdouble(rgb[2]));
         
-            for(int i = 0; i<ny; ++i) {        
+            for(int i = 0; i < ny; ++i) {        
                 glBegin(GL_LINE_STRIP);             
-                for(int j = 0; j<nx; ++j) { 
+                for(int j = 0; j < nx; ++j) { 
                     glVertex3d(GLdouble(ct3x(cs->XData[0][j])),
                            GLdouble(ct3y(cs->YData[0][i])),
                            GLdouble(ct3z(cs->ZData[i][j])) ); 
@@ -2721,9 +2721,9 @@ void MatPlot<T>::display_surface_3d() {
                 glEnd();
             }
 
-            for(int j = 0; j<nx; ++j) {                 
+            for(int j = 0; j < nx; ++j) {                 
                 glBegin(GL_LINE_STRIP);             
-                for(int i = 0; i<ny; ++i) {
+                for(int i = 0; i < ny; ++i) {
                     glVertex3d(GLdouble(ct3x(cs->XData[0][j])),
                            GLdouble(ct3y(cs->YData[0][i])),
                            GLdouble(ct3z(cs->ZData[i][j])) ); 
@@ -2731,14 +2731,14 @@ void MatPlot<T>::display_surface_3d() {
                 glEnd();
             }
         }    
-    } // (x, y,Z)
-    // (X, y,Z) // 
+    } // (x, y, Z)
+    // (X, y, Z) // 
     if(cs->XData.size()>1) {
 
         // Face
         if(cs->FaceColor != "none") {
-            for(int i = 0; i<ny-1; ++i) {                         
-                for(int j = 0; j<nx-1; ++j) { 
+            for(int i = 0; i < ny-1; ++i) {                         
+                for(int j = 0; j < nx-1; ++j) { 
                     rgb = ColorSpec2RGB(cs->FaceColor);        
                     glColor3d(rgb[0], rgb[1], rgb[2]);
                     if(cs->FaceColor =="flat") {
@@ -2778,18 +2778,18 @@ void MatPlot<T>::display_surface_3d() {
             rgb = ColorSpec2RGB(cs->EdgeColor);
             glColor3d(GLfloat(rgb[0]), GLfloat(rgb[1]), rgb[2]);
     
-            for(int i = 0; i<ny; ++i) {        
+            for(int i = 0; i < ny; ++i) {        
                 glBegin(GL_LINE_STRIP);             
-                for(int j = 0; j<nx; ++j) { 
+                for(int j = 0; j < nx; ++j) { 
                     glVertex3d(GLdouble(ct3x(cs->XData[i][j])),
                            GLdouble(ct3y(cs->YData[i][j])),
                            GLdouble(ct3z(cs->ZData[i][j])) ); 
                 }
                 glEnd();
             }
-            for(int j = 0; j<nx; ++j) {                 
+            for(int j = 0; j < nx; ++j) {                 
                 glBegin(GL_LINE_STRIP);             
-                for(int i = 0; i<ny; ++i) {
+                for(int i = 0; i < ny; ++i) {
                     glVertex3d(GLdouble(ct3x(cs->XData[i][j])),
                            GLdouble(ct3y(cs->YData[i][j])),
                            GLdouble(ct3z(cs->ZData[i][j])) ); 
@@ -2797,7 +2797,7 @@ void MatPlot<T>::display_surface_3d() {
                 glEnd();
             }
         }    
-    } // (X, y,Z)
+    } // (X, y, Z)
 }
 
 template <typename T>
@@ -2808,7 +2808,7 @@ void MatPlot<T>::display_pcolor() {
 /// dispaly contour
 template <typename T>
 vector<vector<T>> contourc(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z, const vector<T>& v) {
-    // Z(i,j), x(j), y(i)
+    // Z(i, j), x(j), y(i)
     T x0, y0, z0;    
     size_t ny = Z.size();
     size_t nx = Z[0].size();
@@ -2826,15 +2826,15 @@ vector<vector<T>> contourc(const vector<T>& x, const vector<T>& y, const vector<
 
         // find contour points
         vc.clear();
-        for(int i = 0; i<ny; ++i) {
-            for(int j = 0; j<nx; ++j) {
+        for(int i = 0; i < ny; ++i) {
+            for(int j = 0; j < nx; ++j) {
                 if( (j<nx-1)&&( (Z[i][j+1]-z0)*(Z[i][j]-z0)<0 ) ) {
                     x0 = x[j]+(x[j+1]-x[j])*(z0-Z[i][j])/( Z[i  ][j+1]-Z[i][j] );
                     c.xj =j;c.yi = i;c.xy= 0;c.done = 0;
                     c.x = x0;c.y= y[i];
                     vc.push_back(c);        
                 }
-                if( (i<ny-1)&&( (Z[i+1][j]-z0)*(Z[i][j]-z0)<0 ) ) {
+                if( (i < ny-1)&&( (Z[i+1][j]-z0)*(Z[i][j]-z0)<0 ) ) {
                     y0 = y[i]+(y[i+1]-y[i])*(z0-Z[i][j])/( Z[i+1][j  ]-Z[i][j] );
                     c.xj =j;c.yi = i;c.xy= 1;c.done = 0;
                     c.x = x[j];c.y= y0;
@@ -2844,8 +2844,8 @@ vector<vector<T>> contourc(const vector<T>& x, const vector<T>& y, const vector<
         } 
         if(is_print) {
             printf("vc.size %d\n",vc.size());
-            for(int k= 0;k<vc.size(); ++k) {
-                printf("vc: %2d : %2d %2d :%f %f\n",k,vc[k].xj,vc[k].yi,vc[k].x,vc[k].y);
+            for(int k= 0; k < vc.size(); ++k) {
+                printf("vc: %2d : %2d %2d :%f %f\n", k, vc[k].xj, vc[k].yi, vc[k].x, vc[k].y);
             }
         }
         // sort contour points    
@@ -2860,13 +2860,13 @@ vector<vector<T>> contourc(const vector<T>& x, const vector<T>& y, const vector<
             if(isInited == 0) {// set initial contour point
             ac.clear();
             is = 0; m = 0;        
-            while( !is && (m<vc.size()) ) {
+            while( !is && (m < vc.size()) ) {
                 if(!vc[m].done) { is = 1; kk = m; }
                 m++;
             }
             if(is) {            
                 vc[kk].done =2; 
-                c=vc[kk];
+                c = vc[kk];
                 ac.push_back(vc[kk]); 
                 mode_next = 1;
             }else{
@@ -2877,28 +2877,28 @@ vector<vector<T>> contourc(const vector<T>& x, const vector<T>& y, const vector<
             if( (isInited == 1)||(isInited ==3) ) {// search next contour point
                 is= 0;
                 m = 0;
-                while( !is && (m<vc.size()) ) {
+                while( !is && (m < vc.size()) ) {
                     is= 0;
                     if( (!vc[m].done) || ((vc[m].done ==2)&&(ac.size()>2)) ) {        
-                    if( (c.xy== 0) && (vc[m].xy== 0) && (vc[m].xj == c.xj  ) && (vc[m].yi == c.yi-1) ) { is= 1; }
-                    if( (c.xy== 0) && (vc[m].xy== 0) && (vc[m].xj == c.xj  ) && (vc[m].yi == c.yi+1) ) { is=2; }
-                    if( (c.xy== 0) && (vc[m].xy== 1) && (vc[m].xj == c.xj  ) && (vc[m].yi == c.yi  ) ) { is=3; }
-                    if( (c.xy== 0) && (vc[m].xy== 1) && (vc[m].xj == c.xj+1) && (vc[m].yi == c.yi  ) ) { is=4; }
-                    if( (c.xy== 0) && (vc[m].xy== 1) && (vc[m].xj == c.xj  ) && (vc[m].yi == c.yi-1) ) { is=5; }
-                    if( (c.xy== 0) && (vc[m].xy== 1) && (vc[m].xj == c.xj+1) && (vc[m].yi == c.yi-1) ) { is=6; }
-                    if( (c.xy== 1) && (vc[m].xy== 1) && (vc[m].xj == c.xj+1) && (vc[m].yi == c.yi  ) ) { is=7; }
-                    if( (c.xy== 1) && (vc[m].xy== 1) && (vc[m].xj == c.xj-1) && (vc[m].yi == c.yi  ) ) { is=8; }
-                    if( (c.xy== 1) && (vc[m].xy== 0) && (vc[m].xj == c.xj  ) && (vc[m].yi == c.yi  ) ) { is=9; }
+                    if( (c.xy== 0) && (vc[m].xy== 0) && (vc[m].xj == c.xj  ) && (vc[m].yi == c.yi-1) ) { is = 1; }
+                    if( (c.xy== 0) && (vc[m].xy== 0) && (vc[m].xj == c.xj  ) && (vc[m].yi == c.yi+1) ) { is = 2; }
+                    if( (c.xy== 0) && (vc[m].xy== 1) && (vc[m].xj == c.xj  ) && (vc[m].yi == c.yi  ) ) { is = 3; }
+                    if( (c.xy== 0) && (vc[m].xy== 1) && (vc[m].xj == c.xj+1) && (vc[m].yi == c.yi  ) ) { is = 4; }
+                    if( (c.xy== 0) && (vc[m].xy== 1) && (vc[m].xj == c.xj  ) && (vc[m].yi == c.yi-1) ) { is = 5; }
+                    if( (c.xy== 0) && (vc[m].xy== 1) && (vc[m].xj == c.xj+1) && (vc[m].yi == c.yi-1) ) { is = 6; }
+                    if( (c.xy== 1) && (vc[m].xy== 1) && (vc[m].xj == c.xj+1) && (vc[m].yi == c.yi  ) ) { is = 7; }
+                    if( (c.xy== 1) && (vc[m].xy== 1) && (vc[m].xj == c.xj-1) && (vc[m].yi == c.yi  ) ) { is = 8; }
+                    if( (c.xy== 1) && (vc[m].xy== 0) && (vc[m].xj == c.xj  ) && (vc[m].yi == c.yi  ) ) { is = 9; }
                     if( (c.xy== 1) && (vc[m].xy== 0) && (vc[m].xj == c.xj  ) && (vc[m].yi == c.yi+1) ) { is= 10; }
                     if( (c.xy== 1) && (vc[m].xy== 0) && (vc[m].xj == c.xj-1) && (vc[m].yi == c.yi  ) ) { is= 11; }
                     if( (c.xy== 1) && (vc[m].xy== 0) && (vc[m].xj == c.xj-1) && (vc[m].yi == c.yi+1) ) { is= 12; }
                     }
-                    if(is) {kk=m;}
+                    if(is) {kk = m;}
                     m++;
                 }
                 if(is) {            
                     vc[kk].done = 1; 
-                    c=vc[kk];
+                    c = vc[kk];
                 }
                 if(isInited == 1) {
                     if(is) {            
@@ -2921,7 +2921,7 @@ vector<vector<T>> contourc(const vector<T>& x, const vector<T>& y, const vector<
             }
 
             if(isInited ==2) {// set first terminal
-                c=ac[0];
+                c = ac[0];
                 mode_next =3;
             }
 
@@ -2929,7 +2929,7 @@ vector<vector<T>> contourc(const vector<T>& x, const vector<T>& y, const vector<
                 if(ac.size()) {
                     C[0].push_back(z0);
                     C[1].push_back(T(ac.size()));
-                    for(int i = 0; i<ac.size(); ++i) {
+                    for(int i = 0; i < ac.size(); ++i) {
                         C[0].push_back( ac[i].x );
                         C[1].push_back( ac[i].y );
                     }
@@ -2945,7 +2945,7 @@ vector<vector<T>> contourc(const vector<T>& x, const vector<T>& y, const vector<
     // print
     if(is_print) {
         for(int i = 0; i<C[0].size(); ++i) {
-            printf("C: %3d %f %f\n",i,C[0][i],C[1][i]);
+            printf("C: %3d %f %f\n", i, C[0][i], C[1][i]);
         }
         std::cout <<"done"<<std::endl;
     }
@@ -2971,7 +2971,7 @@ void MatPlot<T>::display_contour() {
 
     // rgb = cs->CData[i][j];
     // glColor3f(rgb[0],rgb[1],rgb[2]);
-    glColor3f(0,0,0);
+    glColor3f(0, 0, 0);
 
     // TODO: adjust line color and properties
     int k = 0, nk;
@@ -2981,14 +2981,14 @@ void MatPlot<T>::display_contour() {
             glBegin(GL_LINE_STRIP);
         }
         else {
-            if(k<=nk) {
+            if(k <= nk) {
                 xx = ctx( C[0][i] );
                 yy = cty( C[1][i] );
                 glVertex2d(xx, yy);
             }
         }
         k++;
-        if(k>nk) {
+        if(k > nk) {
             k = 0;
             glEnd();
         }
@@ -3005,7 +3005,7 @@ vector<vector<T>> MatPlot<T>::peaks(int n) {
     T sigma = T(0.4);
     T a1 = T(1), a2 = T(0.5), a3 = T(0.3);
     T x, y;
-    // vector< vector< T > > Z(n,n);
+    // vector< vector< T > > Z(n, n);
     vector<vector<T>> Z(n, vector<T>(n));
     for(int i = 0; i<n; ++i) {
         for(int j = 0; j<n; ++j) {
@@ -3036,7 +3036,7 @@ int MatPlot<T>::patch() {
     if(isInited == 1) {
     }
 
-    if(iPatch<vPatch.size()) { cp = &vPatch[iPatch]; }
+    if(iPatch < vPatch.size()) { cp = &vPatch[iPatch]; }
     iPatch++;    
     return h;
 }
@@ -3059,7 +3059,7 @@ vector<vector<T>> MatPlot<T>::Index2TrueColor(const vector<T>& IC) {
     }
     vector<T> rgb;
     vector<vector<T>> tc;    
-    for(int j = 0; j<IC.size(); ++j) {
+    for(int j = 0; j < IC.size(); ++j) {
         rgb = map2color(IC[j],ca->CLim[0],ca->CLim[1]);
         tc.push_back(rgb);
     }
@@ -3223,7 +3223,7 @@ void MatPlot<T>::display_patch_2d() {
     vector<T> v(3);
     vector<int> f(3);
     T x, y;
-    for(int i = 0; i<cp->Faces.size(); ++i) {
+    for(int i = 0; i < cp->Faces.size(); ++i) {
         f = cp->Faces[i];
         glBegin(GL_TRIANGLES);    
         x = ctx(cp->Vertices[f[0]][0]);
@@ -3243,7 +3243,7 @@ void MatPlot<T>::display_patch_2d() {
     nf = cp->XData.size();
     vector<T> rgb;
 
-    for(size_t i = 0; i<nf; ++i) {
+    for(size_t i = 0; i < nf; ++i) {
         nv = cp->XData[i].size();
         // Edge
         if(cp->EdgeColor!="none") {
@@ -3254,7 +3254,7 @@ void MatPlot<T>::display_patch_2d() {
             glColor3f(GLfloat(rgb[0]), GLfloat(rgb[1]), GLfloat(rgb[2]));         
         
             glBegin(GL_LINE_LOOP);
-            for(size_t iv = 0; iv<nv; ++iv) {
+            for(size_t iv = 0; iv < nv; ++iv) {
                 glVertex2d( ctx(cp->XData[i][iv]),
                         cty(cp->YData[i][iv]) );
             }
@@ -3272,7 +3272,7 @@ void MatPlot<T>::display_patch_2d() {
             }
         
             glBegin(GL_POLYGON);
-            for(size_t iv= 0; iv<nv; ++iv) {
+            for(size_t iv= 0; iv < nv; ++iv) {
                 glVertex2d(GLdouble(ctx(cp->XData[i][iv])),
                         GLdouble(cty(cp->YData[i][iv])) );
             }
@@ -3289,7 +3289,7 @@ void MatPlot<T>::display_patch_3d() {
     nf = cp->XData.size();
     vector<T> rgb;
 
-    for(int i = 0; i<nf; ++i) {
+    for(int i = 0; i < nf; ++i) {
         nv = cp->XData[i].size();
         // Edge
         if(cp->EdgeColor!="none") {   
@@ -3300,7 +3300,7 @@ void MatPlot<T>::display_patch_3d() {
             glColor3f(GLfloat(rgb[0]), GLfloat(rgb[1]), GLfloat(rgb[2]));         
         
             glBegin(GL_LINE_LOOP);
-            for(int iv= 0; iv<nv; ++iv) {
+            for(int iv= 0; iv < nv; ++iv) {
                 glVertex3d(GLdouble(ct3x(cp->XData[i][iv])), GLdouble(ct3y(cp->YData[i][iv])), GLdouble(ct3z(cp->ZData[i][iv])) );
             }
             glEnd();
@@ -3317,7 +3317,7 @@ void MatPlot<T>::display_patch_3d() {
             }
         
             glBegin(GL_POLYGON);
-            for(int iv= 0; iv<nv; ++iv) {
+            for(int iv= 0; iv < nv; ++iv) {
                 glVertex3d(GLdouble(ct3x(cp->XData[i][iv])), GLdouble(ct3y(cp->YData[i][iv])),  GLdouble(ct3z(cp->ZData[i][iv])));
             }
             glEnd();
@@ -3347,17 +3347,17 @@ int MatPlot<T>::text() {
     if(isInited == 1) {
     }
 
-    if(iText<vText.size()) {ct = &vText[iText];}
+    if(iText < vText.size()) {ct = &vText[iText];}
     iText++;    
     return h;
 }
 
 template <typename T>
 void MatPlot<T>::display_text() {
-    glColor3f(0,0,0);
+    glColor3f(0, 0, 0);
     glRasterPos2f(GLfloat(ctx(ct->Position[0])), GLfloat(cty(ct->Position[1])) );
     gl2psText(ct->String.c_str(), "Arial", 12);        
-    for(int i = 0; i<(int)ct->String.size(); ++i ) {
+    for(int i = 0; i < (int)ct->String.size(); ++i ) {
         glutBitmapCharacter( GLUT_BITMAP_HELVETICA_12, ct->String[i] );
     }
 }
@@ -3391,7 +3391,7 @@ void MatPlot<T>::ptext(const T x, const T y, const string& s) {
     gl2psText(s.c_str(), "Arial", 12);
     // gl2psText(test, "Times-Roman", 24);
     
-    for(int i = 0; i<(int)s.size(); i++ ) {
+    for(int i = 0; i < (int)s.size(); i++ ) {
         glutBitmapCharacter( GLUT_BITMAP_HELVETICA_12, s[i]);                
     }
 }    
@@ -3433,7 +3433,7 @@ void MatPlot<T>::shading(const string& c) {
 
     int tObj = hObj % 100;
     int iObj = hObj / 100;
-    if( (tObj == tSurface) && (iObj<vSurface.size()) ) {
+    if( (tObj == tSurface) && (iObj < vSurface.size()) ) {
         if(c=="faceted") { 
             vSurface[iObj].EdgeColor = "k"; 
         }
@@ -3449,8 +3449,8 @@ vector<T> MatPlot<T>::colormap(const string& c, const T t0) {
     
     vector<T> rgb(3);
     T t = t0;
-    if(t>1) {t = 1;}
-    if(t<0) {t = 0;}
+    if(t > 1) {t = 1;}
+    if(t < 0) {t = 0;}
     
     if( c=="Gray" ) {
         rgb[0] = t;
@@ -3461,31 +3461,31 @@ vector<T> MatPlot<T>::colormap(const string& c, const T t0) {
 
     if( c=="HSV" ) {
         t *= 6.f;
-        if(0.f<= t && t<= 1.f) {rgb[0] = 1;        rgb[1] = t;        rgb[2] = 0;}
-        if(1.f<= t && t<=2.f) {rgb[0] = 1-(t-1);  rgb[1] = 1;        rgb[2] = 0;}
-        if(2.f<= t && t<=3.f) {rgb[0] = 0;        rgb[1] = 1;        rgb[2] = t-2;}
-        if(3.f<= t && t<=4.f) {rgb[0] = 0;        rgb[1] = 1-(t-3);  rgb[2] = 1;}
-        if(4.f<= t && t<=5.f) {rgb[0] = t-4;      rgb[1] = 0;        rgb[2] = 1;}
-        if(5.f<= t && t<=6.f) {rgb[0] = 1;        rgb[1] = 0;        rgb[2] = 1-(t-5);}
+        if(0.f <= t && t <= 1.f) {rgb[0] = 1;        rgb[1] = t;        rgb[2] = 0;}
+        if(1.f <= t && t <=2.f) {rgb[0] = 1-(t-1);  rgb[1] = 1;        rgb[2] = 0;}
+        if(2.f <= t && t <=3.f) {rgb[0] = 0;        rgb[1] = 1;        rgb[2] = t-2;}
+        if(3.f <= t && t <=4.f) {rgb[0] = 0;        rgb[1] = 1-(t-3);  rgb[2] = 1;}
+        if(4.f <= t && t <=5.f) {rgb[0] = t-4;      rgb[1] = 0;        rgb[2] = 1;}
+        if(5.f <= t && t <=6.f) {rgb[0] = 1;        rgb[1] = 0;        rgb[2] = 1-(t-5);}
     
         return rgb;    
     }
 
     if( c=="Jet" ) {
         t *= 8.f;
-        if(0.f<= t && t<= 1.f) {rgb[0] = 0.f;              rgb[1] = 0.f;              rgb[2] = 0.5f+0.5f*t;}
-        if(1.f<= t && t<=3.f)  {rgb[0] = 0.f;              rgb[1] = 0.5f*(t-1);       rgb[2] = 1.f;}
-        if(3.f<= t && t<=5.f)  {rgb[0] = 0.5f*(t-3.f);     rgb[1] = 1.f;              rgb[2] = 1.f-0.5f*(t-3.f);}
-        if(5.f<= t && t<=7.f)  {rgb[0] = 1.f;              rgb[1] = 1.f-0.5f*(t-5.f); rgb[2] = 0.f;}
-        if(7.f<= t && t<=8.f)  {rgb[0] = 1.f-0.5f*(t-7.f); rgb[1] = 0.f;              rgb[2] = 0.f;}
+        if(0.f <= t && t <= 1.f) {rgb[0] = 0.f;              rgb[1] = 0.f;              rgb[2] = 0.5f+0.5f*t;}
+        if(1.f <= t && t <= 3.f)  {rgb[0] = 0.f;              rgb[1] = 0.5f*(t-1);       rgb[2] = 1.f;}
+        if(3.f <= t && t <= 5.f)  {rgb[0] = 0.5f*(t-3.f);     rgb[1] = 1.f;              rgb[2] = 1.f-0.5f*(t-3.f);}
+        if(5.f <= t && t <= 7.f)  {rgb[0] = 1.f;              rgb[1] = 1.f-0.5f*(t-5.f); rgb[2] = 0.f;}
+        if(7.f <= t && t <= 8.f)  {rgb[0] = 1.f-0.5f*(t-7.f); rgb[1] = 0.f;              rgb[2] = 0.f;}
         return rgb;    
     }
 
     if( c=="Hot" ) {
         t*=3;
-        if(0.f<= t && t<= 1.f) {rgb[0] = t;   rgb[1] = 0.f;   rgb[2] = 0.f;}
-        if(1.f<= t && t<=2.f)  {rgb[0] = 1.f; rgb[1] = t-1.f; rgb[2] = 0.f;}
-        if(2.f<= t && t<=3.f)  {rgb[0] = 1.f; rgb[1] = 1.f;   rgb[2] = t-2.f;}
+        if(0.f <= t && t <= 1.f) {rgb[0] = t;   rgb[1] = 0.f;   rgb[2] = 0.f;}
+        if(1.f <= t && t <=2.f)  {rgb[0] = 1.f; rgb[1] = t-1.f; rgb[2] = 0.f;}
+        if(2.f <= t && t <=3.f)  {rgb[0] = 1.f; rgb[1] = 1.f;   rgb[2] = t-2.f;}
         return rgb;
     }
     
@@ -3522,7 +3522,7 @@ vector<T> MatPlot<T>::colormap(const string& c, const T t0) {
     }
     if( c=="Bone" ) {
         rgb[0] = t;
-        // rgb[1] = t; if(t<0.8) {rgb[1] = t;}
+        // rgb[1] = t; if(t < 0.8) {rgb[1] = t;}
         rgb[2] = t;
         return rgb;
     }
@@ -3542,7 +3542,7 @@ void MatPlot<T>::colormap(const string& c) {
     cmap.clear();
     n = 64;
 
-    for(int i = 0; i<n; ++i) {
+    for(int i = 0; i < n; ++i) {
         rgb = colormap(c, (T)i/(n-1));        
         cmap.push_back(rgb);
     }
@@ -3590,9 +3590,9 @@ vector<T> MatPlot<T>::map2color(const T x, const T xmin, const T xmax) {
     T normx;
     vector<T> rgb(3);
     
-    normx = (x-xmin)/(xmax-xmin);
-    if(x>xmax) {normx = 1.f;}
-    if(x<xmin) {normx = 0.f;}
+    normx = (x - xmin) / (xmax - xmin);
+    if(x > xmax) {normx = 1.f;}
+    if(x < xmin) {normx = 0.f;}
     rgb = cmap[int(normx*(n-1))];
     // cout << "c: "<<(int)(normx*n) <<endl;
     // cout << "rgb: "<<rgb[0]<<" "<<endl;
@@ -3648,14 +3648,14 @@ vector<T> MatPlot<T>::ColorSpec2RGB(const string& c) {
     /*
     if(c.size()) {
         if( (c[0] =='[') && (c[c.size()-1] ==']') ) {
-            sprintf(line,c.c_str());
-            tp = strtok(line,d); if(tp) {r = atof(tp);}
-            tp = strtok(NULL,d); if(tp) {g = atof(tp);}
-            tp = strtok(NULL,d); if(tp) {b = atof(tp);}
+            sprintf(line, c.c_str());
+            tp = strtok(line, d); if(tp) {r = atof(tp);}
+            tp = strtok(NULL, d); if(tp) {g = atof(tp);}
+            tp = strtok(NULL, d); if(tp) {b = atof(tp);}
         }
     }
     */
-    // cout <<"c,r,g,b: "<< c <<" "<<r<<" "<<g <<" "<<b<<endl;
+    // cout <<"c, r, g, b: "<< c <<" "<<r<<" "<<g <<" "<<b<<endl;
     vector<T> out(3);
     out[0] = r;
     out[1] = g;
