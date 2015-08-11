@@ -228,10 +228,10 @@ void Line<T>::color(const T r, const T g, const T b) {
 /// Surface
 template <typename T>
 void Surface<T>::get() {
-    cout <<"FaceColor: "<< FaceColor <<endl;
-    cout <<"EdgeColor: "<< EdgeColor <<endl;
-    cout <<"LineStyle: "<< LineStyle <<endl;
-    cout <<"LineWidth: "<< LineWidth <<endl;
+    std::cout <<"FaceColor: "<< FaceColor << std::endl;
+    std::cout <<"EdgeColor: "<< EdgeColor << std::endl;
+    std::cout <<"LineStyle: "<< LineStyle << std::endl;
+    std::cout <<"LineWidth: "<< LineWidth << std::endl;
 }
 
 template <typename T>
@@ -1203,9 +1203,9 @@ void MatPlot<T>::display_axes_3d() {
     // glOrtho(-1.7, 1.7, -1.7, 1.7, -1.5, 3);
     glOrtho(-1.8, 1.8, -1.8, 1.8, -1.5, 3);
     
-    gluLookAt(cos(ca->cta*PI/180)*cos(ca->phi*PI/180), 
-              sin(ca->cta*PI/180)*cos(ca->phi*PI/180), 
-              sin(ca->phi*PI/180),
+    gluLookAt(cos(ca->cta*M_PI/180)*cos(ca->phi*M_PI/180), 
+              sin(ca->cta*M_PI/180)*cos(ca->phi*M_PI/180), 
+              sin(ca->phi*M_PI/180),
               // gluLookAt(CameraPosition[0],CameraPosition[1],CameraPosition[2],
               ca->CameraTarget[0],  ca->CameraTarget[1],  ca->CameraTarget[2],
               ca->CameraUpVector[0],ca->CameraUpVector[1],ca->CameraUpVector[2]);
@@ -1985,8 +1985,8 @@ void MatPlot<T>::display_line() {
 	            if(cl->Marker =="o") { // o
 	                glBegin(GL_LINE_LOOP);
 	                for(int i = 0; i < 20; i++) {
-	                glVertex2d(GLdouble(xx + rx*cos(2*PI*(T)i/(T)(20))),
-	                       GLdouble(yy + ry*sin(2*PI*(T)i/(T)(20))));
+	                glVertex2d(GLdouble(xx + rx*cos(2*M_PI*(T)i/(T)(20))),
+	                       GLdouble(yy + ry*sin(2*M_PI*(T)i/(T)(20))));
 	                }
 	                glEnd();
 	            }

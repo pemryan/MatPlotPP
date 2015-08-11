@@ -53,8 +53,6 @@ using std::deque;
 using std::max;
 using std::min;
 
-#define PI 3.14159265358979323846264
-
 const int tFigure = 1;
 const int tAxes = 2;
 const int tLine = 3;
