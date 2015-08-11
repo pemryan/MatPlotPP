@@ -22,14 +22,14 @@ Version: 0.3.13
 #include "gl2ps.h"
 
 #ifdef _MSC_VER
-#	ifdef DLL_matplotpp
-#		define MATPLOT_API __declspec(dllexport)
-#		else
-#		define MATPLOT_API __declspec(dllimport)
-#       pragma comment (lib, "matplotpp.lib")
-#	endif
+#    ifdef DLL_matplotpp
+#        define MATPLOT_API __declspec(dllexport)
+#    else
+#        define MATPLOT_API __declspec(dllimport)
+#        pragma comment (lib, "matplotpp.lib")
+#    endif
 #else
-#	define MATPLOT_API
+#    define MATPLOT_API
 #endif
 
 inline int glutCreateWindow(const int left, const int top, const int width, const int height, const char* c) {
@@ -91,21 +91,21 @@ struct ContourPoint {
 
 class Figure {
 public:
-    Figure(int id_);
-    void add_child(int i);
+    Figure(const int id_);
+    void add_child(const int i);
 
 public:
     int id;
-    //int Status;// 0:minimized, 1:default position, 2:maximized 
-    int Position[4];//left top width height
+    //int Status; //   0:minimized, 1:default position, 2:maximized 
+    int Position[4]; //  left top width height
     bool isVisible;
     vector<int> Children;
 };
 
 class Layer {
  public:
-    Layer(int id_);
-    void add_child(int i);
+    Layer(const int id_);
+    void add_child(const int i);
 
 public:
     int id;
@@ -117,14 +117,14 @@ public:
 template <typename T>
 class Axes {
 public:
-	Axes(int id_);
+    Axes(const int id_);
     void reset();
     void config();
     int ID();
     int selected();
-    void selected(int i);
-    void add_child(int i);    
-    vector<T> make_tick(const T minf, T maxf);
+    void selected(const int i);
+    void add_child(const int i);    
+    vector<T> make_tick(const T minf, const T maxf);
 
 public:
     int id;
@@ -136,9 +136,9 @@ public:
     T xmin, xmax, ymin, ymax, zmin, zmax;
     int num_child;
 
-    int View;// 0:2D, 1:3D
+    int View; //   0:2D, 1:3D
 
-    vector<vector<T>> ColorMap;// for colorbar
+    vector<vector<T>> ColorMap; //   for colorbar
 
 // Matlab variables //
 public:
@@ -156,8 +156,8 @@ public:
     int Parent;
     vector<int> Children;
     int Selected;
-    T Position[4];//left bottom width height
-    T Viewport3d[4];//left bottom width height
+    T Position[4]; //  left bottom width height
+    T Viewport3d[4]; //  left bottom width height
 
     //Scale
     string XAxisLocation;
@@ -165,13 +165,13 @@ public:
 
     //string XDir,YDir,ZDir;
 
-    T XLim[2], YLim[2], ZLim[2];//plot range
-    int XLimMode, YLimMode, ZLimMode;//0:Auto 1:Manual
-    int XScale, YScale, ZScale;// linear | log
+    T XLim[2], YLim[2], ZLim[2]; //  plot range
+    int XLimMode, YLimMode, ZLimMode; //  0:Auto 1:Manual
+    int XScale, YScale, ZScale; //   linear | log
 
-    vector<T> XTick,YTick,ZTick;
-    string XTickMode,YTickMode,ZTickMode;
-    int TickLabel;// 0:Off, {1:On}
+    vector<T> XTick, YTick, ZTick;
+    string XTickMode, YTickMode, ZTickMode;
+    int TickLabel; //   0:Off, {1:On}
     //View
     T CameraPosition[3];
     T CameraTarget[3];
@@ -179,7 +179,7 @@ public:
 
     // Label
     string Title;
-    string XLabel,YLabel,ZLabel;
+    string XLabel, YLabel, ZLabel;
 
     T CLim[2];
 };
@@ -187,12 +187,12 @@ public:
 template <typename T>
 class Line {
 public:
-	Line(int id_);
+    Line(const int id_);
     int id;
     int Errorbar;
 
     void reset();
-    void color(const T r,T g,T b);
+    void color(const T r, const T g, const T b);
 
 public:
     // Matlab oriented variables //
@@ -203,10 +203,10 @@ public:
     //vector<vector<T>> VData,WData;
 
     string Color;
-    string LineStyle;// {-} | - - | : | -. | none
-    T  LineWidth;
-    string Marker;// {none}
-    T  MarkerSize;
+    string LineStyle; //   {-} | - - | : | -. | none
+    T LineWidth;
+    string Marker; //   {none}
+    T MarkerSize;
     string MarkerEdgeColor;
     string MarkerFaceColor;
 
@@ -223,8 +223,8 @@ public:
 template <typename T>
 class Surface {
 public:
-	Surface(int id_);
-	void get();
+    Surface(const int id_);
+    void get();
 
 public:
     int type;
@@ -236,13 +236,13 @@ public:
     vector<T> V, UserData;
     vector<vector<vector<T>>> CData;
     
-    string FaceColor;//ColorSpec    | none | {flat} 
-    string EdgeColor;//ColorSpec{k} | none | flat
+    string FaceColor; //ColorSpec    | none | {flat} 
+    string EdgeColor; //ColorSpec{k} | none | flat
     
-    string LineStyle;// {-} | - - | : | -. | none
-    T  LineWidth;
-    string Marker;// {none}
-    T  MarkerSize;
+    string LineStyle; // {-} | - - | : | -. | none
+    T LineWidth;
+    string Marker; //  {none}
+    T MarkerSize;
     string MarkerEdgeColor;
     string MarkerFaceColor;
 
@@ -255,13 +255,13 @@ public:
 template <typename T>
 class Patch {
  public:
-    Patch(int id_) {	
-		id=id_;
-		type=0;
-		LineWidth=1;
-		FaceColor="r"; 
-		EdgeColor="k";
-		LineStyle="-";
+    Patch(const int id_) {    
+        id = id_;
+        type = 0;
+        LineWidth = 1;
+        FaceColor = "r"; 
+        EdgeColor = "k";
+        LineStyle = "-";
     }
 
 public:
@@ -277,22 +277,22 @@ public:
     //vector<vector<vector<T>>> CData;
     vector<vector<T>> CData;
 
-    string EdgeColor,FaceColor;//{ColorSpec}|none|flat|interp 
+    string EdgeColor,FaceColor; //  {ColorSpec}|none|flat|interp 
 
     string LineStyle; // {-} | - - | : | -. | none
-    T  LineWidth;
+    T LineWidth;
 };
 //Note: XData[iv][if]
 
 template <typename T>
 class Text {  
  public:
-    Text(int id_);
+    Text(const int id_);
     int id;
     string String;
     T Position[3];
     int Parent;
-    int type;//0:axis 1:figure
+    int type; //  0:axis 1:figure
 };
 
 template <typename T>
@@ -304,22 +304,22 @@ public:
 
     // GLUT Callback Functions ///
     void display();
-    void reshape(int w, int h);
-    void mouse(int button, int state, int x, int y );
-    void motion(int x, int y );
-    void passivemotion(int x, int y);
-    void keyboard(unsigned char key, int x, int y);
+    void reshape(const int w, const int h);
+    void mouse(const int button, const int state, const int x, const int y );
+    void motion(const int x, const int y );
+    void passivemotion(const int x, const int y);
+    void keyboard(const unsigned char key, const int x, const int y);
     
     // Layer ///
     int layer();
     //int layer(const string& s);    
     int layer(const string& s, const bool isVisible);
-    int frame(const string& s, const bool isVisible);// do not use
+    int frame(const string& s, const bool isVisible); //   do not use
 
     // Axes ///
     int axes();
     int gca();
-    int subplot(int m,int n,int p);
+    int subplot(const int m, const int n, const int p);
     
     int colorbar();
 
@@ -327,13 +327,13 @@ public:
     void axis(const T xMin, T xMax, T yMin, T yMax, T zMin, T zMax);
 
     void axis(const string& s);
-    void axis(int s);
+    void axis(const int s);
     
     void grid(const string& s);
-    void grid(int s);
+    void grid(const int s);
 
     void ticklabel(const string& s);
-    void ticklabel(int s);
+    void ticklabel(const int s);
 
     void title(const string& s);
     void xlabel(const string& s);
@@ -355,8 +355,8 @@ public:
     int gco();
     
     // Line ///
-    int begin();//do not use
-    void end();//do not use
+    int begin(); //  do not use
+    void end(); //  do not use
     void vertex(const T x,  const T y);
     void vertex(const T x, const T y, const T z);
 
@@ -405,10 +405,10 @@ public:
     int surface(const vector<vector<T>>& Z, const vector<vector<vector<T>>>& C); //!!   
     int surface(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z);
     int surface(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z, const vector<vector<T>>& C);
-    int surface(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z, const vector<vector<vector<T>>>& C);//!!
+    int surface(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z, const vector<vector<vector<T>>>& C); //  !!
     int surface(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& Z);
     int surface(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& Z, const vector<vector<T>>& C);
-    int surface(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& Z, const vector<vector<vector<T>>>& C);//!!
+    int surface(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& Z, const vector<vector<vector<T>>>& C); //  !!
     
     int pcolor(const vector<vector<T>>& C);
     int pcolor(const vector<vector<vector<T>>>& C);
@@ -447,8 +447,8 @@ public:
     int patch(const vector<vector<T>>& X, const vector<vector<T>>& Y);
     int patch(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<T>& C);
     int patch(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& C);    
-    int patch(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& Z, const vector<T>& C);//!!    
-    int patch(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& Z, const vector<vector<T>>& C);//!!
+    int patch(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& Z, const vector<T>& C); //  !!    
+    int patch(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& Z, const vector<vector<T>>& C); //  !!
     //int patch(vector<vector<T>>& X, vector<vector<T>>& Y,vector<vector<vector<T>>>& C);
     //int patch(vector<vector<T>>& X, vector<vector<T>>& Y, vector<vector<T>>& Z,vector<vector<vector<T>>>& C);
 
@@ -558,7 +558,7 @@ private:
     vector<vector<T>> Index2TrueColor(const vector<T>& IC);
 
 private:
-    vector<vector<T>> cmap;//TODO move to class Figure
+    vector<vector<T>> cmap; //  TODO move to class Figure
     
     int isInited;   // 0:initialization 1:configuration
     int init_level; // initialization level of objects
