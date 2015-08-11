@@ -26,26 +26,32 @@ Version: 0.3.13
 #		define MATPLOT_API __declspec(dllexport)
 #		else
 #		define MATPLOT_API __declspec(dllimport)
+#       pragma comment (lib, "matplotpp.lib")
 #	endif
 #else
 #	define MATPLOT_API
 #endif
 
-inline int glutCreateWindow(int left, int top, int width, int height, const char* c) {
+inline int glutCreateWindow(const int left, const int top, const int width, const int height, const char* c) {
     glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH );
     glutInitWindowPosition( left, top );
     glutInitWindowSize( width, height );   
     return glutCreateWindow(c);
 };
 
-inline int glutCreateWindow(int left, int top, int width, int height) {
+inline int glutCreateWindow(const int left, const int top, const int width, const int height) {
     char c[] = "Untitled";
     return glutCreateWindow(left, top, width, height, c);
 };
 
 namespace MatPlotPP {
 
-using namespace std;
+using std::string;
+using std::vector;
+using std::valarray;
+using std::deque;
+using std::max;
+using std::min;
 
 #define PI 3.14159265358979323846264
 
@@ -66,10 +72,22 @@ typedef vector<vector<double>> dmat;
 typedef vector<vector<vector<double>>> dcube;
 
 template <typename T>
-inline vector<T> linspace(T minf, T maxf, size_t n);
+inline vector<T> linspace(const T minf, const T maxf, const size_t n);
 
 template <typename T>
-inline valarray<T> valinspace(T minf, T maxf, int n);
+inline valarray<T> valinspace(const T minf, const T maxf, const int n);
+
+template <typename T>
+vector<vector<T>> contourc(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z, const vector<T>& v);
+
+/// contour
+template <typename T>
+struct ContourPoint {
+    T x, y;
+    int xj, yi;
+    int xy;
+    int done;
+};
 
 class Figure {
 public:
@@ -80,7 +98,7 @@ public:
     int id;
     //int Status;// 0:minimized, 1:default position, 2:maximized 
     int Position[4];//left top width height
-    int Visible;
+    bool isVisible;
     vector<int> Children;
 };
 
@@ -91,7 +109,7 @@ class Layer {
 
 public:
     int id;
-    int Visible;
+    bool isVisible;
     string layername;
     vector<int> Children;
 };
@@ -106,13 +124,12 @@ public:
     int selected();
     void selected(int i);
     void add_child(int i);    
-    vector<T> make_tick(T minf, T maxf);
+    vector<T> make_tick(const T minf, T maxf);
 
 public:
     int id;
-    T cta,phi;  // controled by mouse
-    T cta0,phi0;// default value or specified by command line
-    // Mouse 
+    T cta, phi;   // controled by mouse
+    T cta0, phi0; // default value or specified by command line
     T XMouse, YMouse;
     int Mouse;
 
@@ -123,16 +140,17 @@ public:
 
     vector<vector<T>> ColorMap;// for colorbar
 
-    // Matlab variables //
+// Matlab variables //
+public:
     // styles
-    int Box;//0:Off, 1:On
+    int Box;           // 0:Off, 1:On
     string GridLineStyle;
     T LineWidth;
-    string TickDir; // {in} | out
-    //string TickDirMode;
-    //TickLength
-    int Visible;//0:Off, 1:On
-    int XGrid,YGrid,ZGrid;// {0:Off}, 1:On
+    string TickDir;    // {in} | out
+    // string TickDirMode;
+    // TickLength
+    bool isVisible; //0:Off, 1:On
+    int XGrid, YGrid, ZGrid; // {0:Off}, 1:On
 
     // General Information 
     int Parent;
@@ -174,7 +192,7 @@ public:
     int Errorbar;
 
     void reset();
-    void color(T r,T g,T b);
+    void color(const T r,T g,T b);
 
 public:
     // Matlab oriented variables //
@@ -277,18 +295,6 @@ class Text {
     int type;//0:axis 1:figure
 };
 
-/// contour
-template <typename T>
-struct ContourPoint {
-    T x, y;
-    int xj, yi;
-    int xy;
-    int done;
-};
-
-template <typename T>
-vector<vector<T>> contourc(vector<T> x, vector<T> y, vector<vector<T>> Z, vector<T> v);
-
 template <typename T>
 class MatPlot {
 public:
@@ -301,14 +307,14 @@ public:
     void reshape(int w, int h);
     void mouse(int button, int state, int x, int y );
     void motion(int x, int y );
-    void passivemotion(int x,int y);
+    void passivemotion(int x, int y);
     void keyboard(unsigned char key, int x, int y);
     
     // Layer ///
     int layer();
-    //int layer(string s);    
-    int layer(string s, int Visible);
-    int frame(string s, int Visible);// do not use
+    //int layer(const string& s);    
+    int layer(const string& s, const bool isVisible);
+    int frame(const string& s, const bool isVisible);// do not use
 
     // Axes ///
     int axes();
@@ -317,69 +323,69 @@ public:
     
     int colorbar();
 
-    void axis(T xMin, T xMax, T yMin, T yMax);
-    void axis(T xMin, T xMax, T yMin, T yMax, T zMin, T zMax);
+    void axis(const T xMin, T xMax, T yMin, T yMax);
+    void axis(const T xMin, T xMax, T yMin, T yMax, T zMin, T zMax);
 
-    void axis(string s);
+    void axis(const string& s);
     void axis(int s);
     
-    void grid(string s);
+    void grid(const string& s);
     void grid(int s);
 
-    void ticklabel(string s);
+    void ticklabel(const string& s);
     void ticklabel(int s);
 
-    void title(string s);
-    void xlabel(string s);
-    void ylabel(string s);
-    void zlabel(string s);
+    void title(const string& s);
+    void xlabel(const string& s);
+    void ylabel(const string& s);
+    void zlabel(const string& s);
 
-    //void xlim(T min,T max);
-    //void xlim(string s);
-    //void legend(string s,int N);
+    //void xlim(const T min,T max);
+    //void xlim(const string& s);
+    //void legend(const string& s,int N);
     //int plotyy
     void mouse_capture(T *xmouse, T *ymouse);   
     // set, General Object Handling ///
-    void set(string v);
-    void set(T v);  
-    void set(string p,T v);
-    void set(string p,string v);
-    void set(int h,string p,string v);
-    void set(int h,string p,T v);      
+    void set(const string& v);
+    void set(const T v);  
+    void set(const string& p, const T v);
+    void set(const string& p, const string& v);
+    void set(const int h, const string& p, const string& v);
+    void set(const int h, const string& p, const T v);      
     int gco();
     
     // Line ///
     int begin();//do not use
     void end();//do not use
-    void vertex(T x, T y);
-    void vertex(T x, T y, T z);
+    void vertex(const T x,  const T y);
+    void vertex(const T x, const T y, const T z);
 
     int line();
-    int line(vector<T> x, vector<T> y);
-    int line(vector<T> x, vector<T> y, vector<T> z);
+    int line(const vector<T>& x, const vector<T>& y);
+    int line(const vector<T>& x, const vector<T>& y, const vector<T>& z);
     //line(X,Y)
     //line(X,Y,Z)
 
-    int plot(vector<T> y);
-    int plot(vector<T> x, vector<T> y);    
-    //int plot(vector<vector<T>> Y);
-    //int plot(vector<T> x, vector<vector<T>> Y);
-    //int plot(vector<vector<T>> X, vector<vector<T>> Y);
-    int plot(valarray<T> x,valarray<T> y);
+    int plot(const vector<T>& y);
+    int plot(const vector<T>& x, const vector<T>& y);    
+    //int plot(const vector<vector<T>>& Y);
+    //int plot(const vector<T>& x, const vector<vector<T>>& Y);
+    //int plot(const vector<vector<T>>& X, const vector<vector<T>>& Y);
+    int plot(const valarray<T>& x, const valarray<T>& y);
     
-    int plot3(vector<T> x, vector<T> y, vector<T> z);
-    //int plot3(vector<T> X, vector<T> Y, vector<T> Z);
+    int plot3(const vector<T>& x, const vector<T>& y, const vector<T>& z);
+    //int plot3(const vector<T>& x, const vector<T>& y, const vector<T>& z);
 
-    int semilogx(vector<T> x, vector<T> y);
-    int semilogy(vector<T> x, vector<T> y);
+    int semilogx(const vector<T>& x, const vector<T>& y);
+    int semilogy(const vector<T>& x, const vector<T>& y);
     //int loglog(vector<T> y);
-    int loglog(vector<T> x, vector<T> y);    
+    int loglog(const vector<T>& x, const vector<T>& y);    
     
     //int polar(vector<T> theta, vector<T> rho);
 
-    void vertex(T x, T y, T ep, T em);
-    int errorbar(vector<T> x, vector<T> y, vector<T> e);
-    int errorbar(vector<T> x, vector<T> y, vector<T> ep, vector<T> em);
+    void vertex(const T x, const T y, const T ep, const T em);
+    int errorbar(const vector<T>& x, const vector<T>& y, const vector<T>& e);
+    int errorbar(const vector<T>& x, const vector<T>& y, const vector<T>& ep, const vector<T>& em);
 
     //int quiver(U,V);
     //int quiver(X,Y,U,V);
@@ -389,67 +395,67 @@ public:
     //int scatter(X,Y)
 
     // Surface, Contour ///
-    vector<vector<T>> peaks(int n);
-    //vector<vector<T>> peaks(int m,int n);
-    //vector<vector<T>> peaks(int m,int n,string type);
+    vector<vector<T>> peaks(const int n);
+    //vector<vector<T>> peaks(int m, int n);
+    //vector<vector<T>> peaks(int m, int n, string type);
 
     int surface();
-    int surface(vector<vector<T>> Z);
-    int surface(vector<vector<T>> Z, vector<vector<T>> C);
-    int surface(vector<vector<T>> Z, vector<vector<vector<T>>> C); //!!   
-    int surface(vector<T> x, vector<T> y, vector<vector<T>> Z);
-    int surface(vector<T> x, vector<T> y, vector<vector<T>> Z, vector<vector<T>> C);
-    int surface(vector<T> x, vector<T> y, vector<vector<T>> Z, vector<vector<vector<T>>> C);//!!
-    int surface(vector<vector<T>> X, vector<vector<T>> Y, vector<vector<T>> Z);
-    int surface(vector<vector<T>> X, vector<vector<T>> Y, vector<vector<T>> Z, vector<vector<T>> C);
-    int surface(vector<vector<T>> X, vector<vector<T>> Y, vector<vector<T>> Z, vector<vector<vector<T>>> C);//!!
+    int surface(const vector<vector<T>>& Z);
+    int surface(const vector<vector<T>>& Z, const vector<vector<T>>& C);
+    int surface(const vector<vector<T>>& Z, const vector<vector<vector<T>>>& C); //!!   
+    int surface(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z);
+    int surface(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z, const vector<vector<T>>& C);
+    int surface(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z, const vector<vector<vector<T>>>& C);//!!
+    int surface(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& Z);
+    int surface(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& Z, const vector<vector<T>>& C);
+    int surface(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& Z, const vector<vector<vector<T>>>& C);//!!
     
-    int pcolor(vector<vector<T>> C);
-    int pcolor(vector<vector<vector<T>>> C);
-    int pcolor(vector<T> x, vector<T> y, vector<vector<T>> C);
-    int pcolor(vector<T> x, vector<T> y, vector<vector<vector<T>>> C);
-    int pcolor(vector<vector<T>> X, vector<vector<T>> Y, vector<vector<T>> C);
-    int pcolor(vector<vector<T>> X, vector<vector<T>> Y, vector<vector<vector<T>>> C);
+    int pcolor(const vector<vector<T>>& C);
+    int pcolor(const vector<vector<vector<T>>>& C);
+    int pcolor(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& C);
+    int pcolor(const vector<T>& x, const vector<T>& y, const vector<vector<vector<T>>>& C);
+    int pcolor(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& C);
+    int pcolor(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<vector<T>>>& C);
 
-    int contour(vector<vector<T>> Z);
-    int contour(vector<vector<T>> Z,int n);
-    int contour(vector<vector<T>> Z, vector<T> v);
-    int contour(vector<T> x, vector<T> y, vector<vector<T>> Z);
-    int contour(vector<T> x, vector<T> y, vector<vector<T>> Z,int n);
-    int contour(vector<T> x, vector<T> y, vector<vector<T>> Z, vector<T> v);
-    //int contour(vector<vector<T>> X, vector<vector<T>> Y, vector<vector<T>> Z);
-    //int contour(vector<vector<T>> X, vector<vector<T>> Y, vector<vector<T>> Z,int n);
-    //int contour(vector<vector<T>> X, vector<vector<T>> Y, vector<vector<T>> Z, vector<T> v);
+    int contour(const vector<vector<T>>& Z);
+    int contour(const vector<vector<T>>& Z, const int n);
+    int contour(const vector<vector<T>>& Z, const vector<T>& v);
+    int contour(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z);
+    int contour(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z, const int n);
+    int contour(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z, const vector<T>& v);
+    //int contour(vector<vector<T>>& X, vector<vector<T>>& Y, vector<vector<T>>& Z);
+    //int contour(vector<vector<T>>& X, vector<vector<T>>& Y, vector<vector<T>>& Z,int n);
+    //int contour(vector<vector<T>>& X, vector<vector<T>>& Y, vector<vector<T>>& Z, vector<T> v);
 
-    //int mesh(vector<vector<T>> Z);
-    //int mesh(vector<vector<T>> Z, vector<vector<T>> C);
-    //int mesh(vector<vector<T>> Z, vector<vector<vector<T>>> C);    
-    int mesh(vector<T> x, vector<T> y, vector<vector<T>> Z);
-    //int mesh(vector<T> x, vector<T> y, vector<vector<T>> Z, vector<vector<T>> C);
-    //int mesh(vector<T> x, vector<T> y, vector<vector<T>> Z, vector<vector<vector<T>>> C);    
-    //int mesh(vector<vector<T>> X, vector<vector<T>> Y, vector<vector<T>> Z);
-    //int mesh(vector<vector<T>> X, vector<vector<T>> Y, vector<vector<T>> Z, vector<vector<T>> C);
-    //int mesh(vector<vector<T>> X, vector<vector<T>> Y, vector<vector<T>> Z, vector<vector<vector<T>>> C);
+    //int mesh(vector<vector<T>>& Z);
+    //int mesh(vector<vector<T>>& Z, vector<vector<T>>& C);
+    //int mesh(vector<vector<T>>& Z, vector<vector<vector<T>>>& C);    
+    int mesh(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z);
+    //int mesh(const vector<T>& x, const vector<T>& y, vector<vector<T>>& Z, vector<vector<T>>& C);
+    //int mesh(const vector<T>& x, const vector<T>& y, vector<vector<T>>& Z, vector<vector<vector<T>>>& C);    
+    //int mesh(vector<vector<T>>& X, vector<vector<T>>& Y, vector<vector<T>>& Z);
+    //int mesh(vector<vector<T>>& X, vector<vector<T>>& Y, vector<vector<T>>& Z, vector<vector<T>>& C);
+    //int mesh(vector<vector<T>>& X, vector<vector<T>>& Y, vector<vector<T>>& Z, vector<vector<vector<T>>>& C);
     // meshc()
     // meshz()
 
-    int surf(vector<T> x, vector<T> y, vector<vector<T>> Z);
+    int surf(const vector<T>& x, const vector<T>& y, const vector<vector<T>>& Z);
 
     // Patch ///
 
     int patch();
-    int patch(vector<vector<T>> X, vector<vector<T>> Y);
-    int patch(vector<vector<T>> X, vector<vector<T>> Y, vector<T> C);
-    int patch(vector<vector<T>> X, vector<vector<T>> Y, vector<vector<T>> C);    
-    int patch(vector<vector<T>> X, vector<vector<T>> Y, vector<vector<T>> Z, vector<T> C);//!!    
-    int patch(vector<vector<T>> X, vector<vector<T>> Y, vector<vector<T>> Z, vector<vector<T>> C);//!!
-    //int patch(vector<vector<T>> X, vector<vector<T>> Y,vector<vector<vector<T>>> C);
-    //int patch(vector<vector<T>> X, vector<vector<T>> Y, vector<vector<T>> Z,vector<vector<vector<T>>> C);
+    int patch(const vector<vector<T>>& X, const vector<vector<T>>& Y);
+    int patch(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<T>& C);
+    int patch(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& C);    
+    int patch(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& Z, const vector<T>& C);//!!    
+    int patch(const vector<vector<T>>& X, const vector<vector<T>>& Y, const vector<vector<T>>& Z, const vector<vector<T>>& C);//!!
+    //int patch(vector<vector<T>>& X, vector<vector<T>>& Y,vector<vector<vector<T>>>& C);
+    //int patch(vector<vector<T>>& X, vector<vector<T>>& Y, vector<vector<T>>& Z,vector<vector<vector<T>>>& C);
 
-    int bar(vector<T> y);
-    int bar(vector<T> y,T width);
-    int bar(vector<T> x, vector<T> y);
-    int bar(vector<T> x, vector<T> y,T width);
+    int bar(const vector<T>& y);
+    int bar(const vector<T>& y, const T width);
+    int bar(const vector<T>& x, const vector<T>& y);
+    int bar(const vector<T>& x, const vector<T>& y, const T width);
 
     //int bar(Y)
     //int bar(Y,T width);
@@ -471,17 +477,17 @@ public:
     // Text ///
     //TODO: more fonts    
     int text();
-    int text(T x,T y,string s);
-    void set_font(char font_[],int size);
-    void ptext(T x,T y,string s);
-    void ptext3(T x,T y,T z,string s);
-    void ptext3c(T x,T y,T z,string s);
+    int text(const T x, const T y, const string& s);
+    void set_font(const char font_[], const int size);
+    void ptext(const T x, const T y, const string& s);
+    void ptext3(const T x, const T y, T z, const string& s);
+    void ptext3c(const T x, const T y, T z, const string& s);
 
     // Colors ///
-    void color(T r,T g,T b);
-    vector<T> colormap(string c,T t);
-    void colormap(string c);
-    void colormap(vector<vector<T> > c);
+    void color(const T r, const T g, const T b);
+    vector<T> colormap(const string& c, const T t);
+    void colormap(const string& c);
+    void colormap(const vector<vector<T>>& c);
 
     void gray();
     void jet();
@@ -493,25 +499,25 @@ public:
     void autumn();
     void winter();
 
-    vector<T> map2color(T x, T xmin, T xmax);
+    vector<T> map2color(const T x, const T xmin, const T xmax);
     
-    void Shading(string c);
-    void shading(string c);
-    vector<T> ColorSpec2RGB(string c);
-    string rgb2colorspec(vector<T> rgb);
+    void Shading(const string& c);
+    void shading(const string& c);
+    vector<T> ColorSpec2RGB(const string& c);
+    string rgb2colorspec(const vector<T>& rgb);
 
     void print();
 private:  
     // coordinate transform  //
     // figure coordination
-    T ctx2(T x);
-    T cty2(T y);
+    T ctx2(const T x);
+    T cty2(const T y);
     // axes coordination
-    T ctx(T x);
-    T cty(T y);
-    T ct3x(T x);
-    T ct3y(T y);
-    T ct3z(T z);
+    T ctx(const T x);
+    T cty(const T y);
+    T ct3x(const T x);
+    T ct3y(const T y);
+    T ct3z(const T z);
     
     int figure();
 
@@ -542,14 +548,14 @@ private:
     void display_text();
 
     // mouse //
-    void Layer_mouse(int button, int state, int x, int y );
-    void Axes_mouse(int button, int state, int x, int y );
-    void Axes_motion(int x, int y );
+    void Layer_mouse(const int button, const int state, const int x, const int y );
+    void Axes_mouse(const int button, const int state, const int x, const int y );
+    void Axes_motion(const int x, const int y );
 
     void surface_config();
     void line_config();
     void patch_config();
-    vector<vector<T>> Index2TrueColor(vector<T> IC);
+    vector<vector<T>> Index2TrueColor(const vector<T>& IC);
 
 private:
     vector<vector<T>> cmap;//TODO move to class Figure
@@ -600,8 +606,8 @@ private:
 } // end namespace matplotpp
 
 // export functions and class.
-template MATPLOT_API std::vector<double> MatPlotPP::linspace(double, double, size_t);
-template MATPLOT_API std::vector<float> MatPlotPP::linspace(float, float, size_t);
+template MATPLOT_API std::vector<double> MatPlotPP::linspace(const double, const double, const size_t);
+template MATPLOT_API std::vector<float> MatPlotPP::linspace(const float, const float, const size_t);
 template class MATPLOT_API MatPlotPP::MatPlot<double>;
 template class MATPLOT_API MatPlotPP::MatPlot<float>;
 
