@@ -7,6 +7,12 @@ Version:0.3.13
 ****************************************************************************/
 #include "MatPlotpp.h"
 
+// export functions and class.
+template MATPLOT_API std::vector<double> MatPlotPP::linspace(const double, const double, const size_t);
+template MATPLOT_API std::vector<float> MatPlotPP::linspace(const float, const float, const size_t);
+template class MATPLOT_API MatPlotPP::MatPlot<double>;
+template class MATPLOT_API MatPlotPP::MatPlot<float>;
+
 namespace MatPlotPP {
 
 template <typename T>
@@ -842,7 +848,7 @@ void MatPlot<T>::display_layer2() {
 /// events (mouse)
 template <typename T>
 void MatPlot<T>::Layer_mouse(const int button, const int state, const int x, const int y) {
-    int l ,t, w, h;
+    int l, t, w, h;
     bool is;
     T dt;
     l = 1;
@@ -880,7 +886,7 @@ void MatPlot<T>::Layer_mouse(const int button, const int state, const int x, con
 
 template <typename T>
 int MatPlot<T>::layer(const string& s, const bool isVisible ) {
-    int h =layer();
+    int h = layer();
     if(isInited == 0) {
     cfr->isVisible = isVisible;
     cfr->layername = s;
@@ -890,7 +896,7 @@ int MatPlot<T>::layer(const string& s, const bool isVisible ) {
 
 template <typename T>
 int MatPlot<T>::frame(const string& s, const bool isVisible ) {
-    int h =layer();
+    int h = layer();
     if(isInited == 0) {
         cfr->isVisible = isVisible;
         cfr->layername =s;
@@ -941,8 +947,8 @@ void MatPlot<T>::display_axes() {
     }
 
     // childlen // 
-    int tObj;// type  of child object
-    int iObj;// index of child object
+    int tObj; // type  of child object
+    int iObj; // index of child object
     for(int i = 0; i < ca->Children.size(); ++i) {
         tObj = ca->Children[i]%100;
         iObj = ca->Children[i]/100;
@@ -1040,7 +1046,7 @@ void MatPlot<T>::display_axes_2d() {
         }
 
         // Grid // 
-        gridlinestyle =3;
+        gridlinestyle = 3;
         if(ca->GridLineStyle =="-"  ) {gridlinestyle = 1;}
         if(ca->GridLineStyle =="- -") {gridlinestyle = 2;}
         if(ca->GridLineStyle ==":"  ) {gridlinestyle = 3;}
@@ -1208,7 +1214,7 @@ void MatPlot<T>::display_axes_3d() {
               sin(ca->phi*M_PI/180),
               // gluLookAt(CameraPosition[0],CameraPosition[1],CameraPosition[2],
               ca->CameraTarget[0],  ca->CameraTarget[1],  ca->CameraTarget[2],
-              ca->CameraUpVector[0],ca->CameraUpVector[1],ca->CameraUpVector[2]);
+              ca->CameraUpVector[0], ca->CameraUpVector[1], ca->CameraUpVector[2]);
     
     /*
     // x, y, z axes for test
@@ -1246,10 +1252,10 @@ void MatPlot<T>::display_axes_3d() {
         int signx, signy;
         cta0 = ca->cta; 
         cta0 = fmod(ca->cta, T(360));
-        if((  0<= cta0)&&(cta0< 90)) {signx = 1; signy = 1;}
-        if(( 90<= cta0)&&(cta0<190)) {signx = -1; signy = 1;}
-        if((180<= cta0)&&(cta0<270)) {signx = -1; signy = -1;}
-        if((270<= cta0)&&(cta0<360)) {signx = 1; signy = -1;}
+        if((  0 <= cta0) && (cta0 < 90)) {signx = 1; signy = 1;}
+        if(( 90 <= cta0) && (cta0 <190)) {signx = -1; signy = 1;}
+        if((180 <= cta0) && (cta0 <270)) {signx = -1; signy = -1;}
+        if((270 <= cta0) && (cta0 <360)) {signx = 1; signy = -1;}
 
         glColor3f(0.f, 0.f, 0.f);
 
@@ -1274,21 +1280,21 @@ void MatPlot<T>::display_axes_3d() {
         // x
         for(int i = 0; i < ca->XTick.size(); ++i) {
             glBegin(GL_LINE_STRIP);
-            glVertex3d(GLdouble(ct3x(ca->XTick[i])), signy, -1 );
-            glVertex3d(GLdouble(ct3x(ca->XTick[i])), signy*r1, -1 );
+            glVertex3d(GLdouble(ct3x(ca->XTick[i])), signy, -1);
+            glVertex3d(GLdouble(ct3x(ca->XTick[i])), signy * r1, -1);
             glEnd();
         }
         // y
         for(int i = 0; i < ca->YTick.size(); ++i) {
             glBegin(GL_LINE_STRIP);
-            glVertex3d( signx   , ct3y(ca->YTick[i]), -1 );
-            glVertex3d( signx*r1, ct3y(ca->YTick[i]), -1 );
+            glVertex3d( signx   , ct3y(ca->YTick[i]), -1);
+            glVertex3d( signx*r1, ct3y(ca->YTick[i]), -1);
             glEnd();
         }
         // z
         for(int i = 0; i < ca->ZTick.size(); ++i) {
             glBegin(GL_LINE_STRIP);
-            glVertex3d( signy , -signx , ct3z(ca->ZTick[i]) );
+            glVertex3d( signy, -signx, ct3z(ca->ZTick[i]) );
             glVertex3d( signy*r1, -signx, ct3z(ca->ZTick[i]) );
             glEnd();
         }
@@ -1359,7 +1365,7 @@ void MatPlot<T>::display_axes_colorbar() {
         }
         // z tick number
         for(int i = 0; i < ca->ZTick.size(); ++i) {
-        sprintf(ctmp, "%4.1f",ca->ZTick[i]);
+        sprintf(ctmp, "%4.1f", ca->ZTick[i]);
         ptext(T(l + w + 0.01), T(cty2(ca->ZTick[i])), ctmp );
         }
     } // Box
@@ -1372,9 +1378,9 @@ void MatPlot<T>::display_axes_colorbar() {
         
         glBegin(GL_QUADS); 
         glVertex2d(GLdouble(l), GLdouble(b + h * i/n));
-        glVertex2d(GLdouble(l + w), GLdouble(b + h*i/n));
-        glVertex2d(GLdouble(l + w), GLdouble(b + h*(i + 1)/n));
-        glVertex2d(GLdouble(l), GLdouble(b + h*(i + 1)/n));
+        glVertex2d(GLdouble(l + w), GLdouble(b + h * i/n));
+        glVertex2d(GLdouble(l + w), GLdouble(b + h * (i + 1)/n));
+        glVertex2d(GLdouble(l), GLdouble(b + h * (i + 1)/n));
         glEnd();        
     }
 }
@@ -1448,7 +1454,7 @@ void MatPlot<T>::Axes_motion(const int x, const int y) {
             cta = ctaButtonDown - (T) (x - xButtonDown)*1;
             phi = phiButtonDown + (T) (y - yButtonDown)*1;
             if(phi >= 90) {phi = 90;}
-            if(phi <=-90) {phi =- 90;}
+            if(phi <= -90) {phi =- 90;}
             if(cta > 360) {cta += -360;}
             if(cta < 0) {cta += 360;}
         
@@ -1507,7 +1513,7 @@ int MatPlot<T>::colorbar() {
     ca->View = 2;
     ca->Position[0] = T(l + w + w*0.01);
     ca->Position[1] = b;
-    ca->Position[2] = T(w*0.05);
+    ca->Position[2] = T(w * 0.05);
     ca->Position[3] = h;
     ca->ZLim[0] = zmin;
     ca->ZLim[1] = zmax;
@@ -1541,7 +1547,7 @@ void MatPlot<T>::axis(const T xMin, const T xMax, const T yMin, const T yMax, co
     ca->XLimMode = 1;
     ca->YLimMode = 1;
     ca->ZLimMode = 1;
-    ca->View = 1;// 3D
+    ca->View = 1; // 3D
 }
 
 template <typename T>
@@ -1565,7 +1571,7 @@ void MatPlot<T>::grid(const string& s) {
 template <typename T>
 void MatPlot<T>::grid(const int s) {
     if(s) {ca->XGrid = 1; ca->YGrid = 1; ca->ZGrid = 1;}
-    else{ca->XGrid = 0; ca->YGrid = 0; ca->ZGrid = 0;}    
+    else {ca->XGrid = 0; ca->YGrid = 0; ca->ZGrid = 0;}    
 }
 
 template <typename T>
@@ -1650,13 +1656,13 @@ T Fmin(const vector<vector<T>>& x) {
 /// line
 template <typename T>
 int MatPlot<T>::line() {
-    int h = iLine*100 + tLine; 
+    int h = iLine * 100 + tLine; 
     hObj = h;
 
     if(isInited == 0) {        
         ca->add_child(h);                
         vLine.push_back(Line<T>(h));
-        // al.Parent =gca();
+        // al.Parent = gca();
     }
 
     if(isInited == 1) {
@@ -1708,7 +1714,7 @@ void MatPlot<T>::line_config() {
 
 template <typename T>
 int MatPlot<T>::line(const vector<T>& x, const vector<T>& y) {
-    int h =line();
+    int h = line();
     if(cfr->isVisible) {
         cl->XData = x;
         cl->YData = y;
@@ -1719,7 +1725,7 @@ int MatPlot<T>::line(const vector<T>& x, const vector<T>& y) {
 
 template <typename T>
 int MatPlot<T>::line(const vector<T>& x, const vector<T>& y, const vector<T>& z) {
-    int h =line();
+    int h = line();
     if(cfr->isVisible) {
         cl->XData = x;
         cl->YData = y; 
@@ -1788,7 +1794,7 @@ int MatPlot<T>::semilogx(const vector<T>& x, const vector<T>& y) {
 template <typename T>
 int MatPlot<T>::semilogy(const vector<T>& x, const vector<T>& y) {
     ca->YScale = 1;    
-    int h =line();
+    int h = line();
     if(cfr->isVisible) {
         cl->XData = x;
         cl->YData = y; 
@@ -1866,7 +1872,7 @@ void MatPlot<T>::vertex(const T x, const T y, const T z) {
 
 template <typename T>   
 int MatPlot<T>::plot3(const vector<T>& x, const vector<T>& y, const vector<T>& z) {
-    ca->View= 1;
+    ca->View = 1;
     begin();
     for(int i = 0; i < x.size(); ++i) { vertex(x[i], y[i],z[i]); }
     end();
@@ -1877,8 +1883,8 @@ int MatPlot<T>::plot3(const vector<T>& x, const vector<T>& y, const vector<T>& z
 template <typename T>
 void MatPlot<T>::display_line() {
     
-    T xx, yy;// transformed coordination 
-    T r;// marker size
+    T xx, yy; // transformed coordination 
+    T r; // marker size
     T rx, ry;
     vector<T> rgb = ColorSpec2RGB(cl->Color);
     glColor3f(GLfloat(rgb[0]), GLfloat(rgb[1]), GLfloat(rgb[2]));
@@ -3671,4 +3677,3 @@ string MatPlot<T>::rgb2colorspec(const vector<T>& rgb) {
 }
 
 } // end Namespace MatPlotPP
-
